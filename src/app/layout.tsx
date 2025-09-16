@@ -32,7 +32,7 @@ export default function RootLayout({
               onCollapseSidebar={() => setSidebarCollapsed((prev) => !prev)}
             />
 
-            <main className="flex-1 p-6 bg-white dark:bg-gray-950">
+            <main className="flex-1 p-6 bg-white dark:bg-[#0a0a0a]">
               {children}
             </main>
           </div>
