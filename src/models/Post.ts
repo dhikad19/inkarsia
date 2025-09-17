@@ -16,7 +16,7 @@ const PostSchema: Schema<IPost> = new Schema(
   {
     title: { type: String, required: true },
     slug: { type: String, required: true, unique: true },
-    content: { type: String, required: true },
+    content: { type: String, required: true }, // Markdown disimpan di sini
     author: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

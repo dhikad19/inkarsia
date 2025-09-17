@@ -85,10 +85,11 @@ export default function Sidebar({
   return (
     <aside
       className={clsx(
-        "bg-gray-100 dark:bg-[#171717] border-r border-gray-200 dark:border-gray-900 h-screen flex flex-col transition-all duration-300",
+        "bg-gray-100 fixed top-0 dark:bg-[#171717] border-r border-gray-200 dark:border-gray-900 h-screen flex flex-col transition-all duration-300",
         isCollapsed ? "w-16" : "w-64",
         !isOpen && "hidden md:flex"
-      )}>
+      )}
+    >
       <div className="p-4 font-bold text-lg truncate">
         {!isCollapsed && "My App"}
       </div>
@@ -107,7 +108,8 @@ export default function Sidebar({
                 <div key={item.label}>
                   <button
                     onClick={() => toggleGroup(item.label)}
-                    className="flex items-center justify-between w-full px-3 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-800">
+                    className="flex items-center justify-between w-full px-3 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-800"
+                  >
                     <div className="flex items-center gap-3">
                       <item.icon className="w-5 h-5" />
                       {!isCollapsed && <span>{item.label}</span>}
@@ -129,7 +131,8 @@ export default function Sidebar({
                         <Link
                           key={sub.href}
                           href={sub.href}
-                          className="block px-3 py-2 rounded text-sm hover:bg-gray-200 dark:hover:bg-gray-800 ml-2">
+                          className="block px-3 py-2 rounded text-sm hover:bg-gray-200 dark:hover:bg-gray-800 ml-2"
+                        >
                           {sub.label}
                         </Link>
                       ))}
@@ -140,7 +143,8 @@ export default function Sidebar({
                 <Link
                   key={item.href}
                   href={item.href!}
-                  className="flex items-center gap-3 px-3 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-800">
+                  className="flex items-center gap-3 px-3 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-800"
+                >
                   <item.icon className="w-5 h-5" />
                   {!isCollapsed && <span>{item.label}</span>}
                 </Link>
@@ -158,7 +162,8 @@ export default function Sidebar({
           className={clsx(
             "flex items-center gap-3 w-full px-3 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-800",
             isDropdownOpen && "bg-gray-200 dark:bg-gray-800"
-          )}>
+          )}
+        >
           <Settings className="w-5 h-5" />
           {!isCollapsed && <span>Settings</span>}
         </button>
@@ -166,20 +171,24 @@ export default function Sidebar({
         {isDropdownOpen && (
           <div
             ref={panelRef}
-            className="absolute left-full bottom-0 mb-4 ml-0 w-48 rounded-md bg-gray-800 dark:bg-gray-900 shadow-lg p-2 z-20">
+            className="absolute left-full bottom-0 mb-4 ml-0 w-48 rounded-md bg-gray-800 dark:bg-gray-900 shadow-lg p-2 z-20"
+          >
             <Link
               href="/profile"
-              className="block px-3 py-2 rounded text-sm hover:bg-gray-700 dark:hover:bg-gray-700">
+              className="block px-3 py-2 rounded text-sm hover:bg-gray-700 dark:hover:bg-gray-700"
+            >
               Profile
             </Link>
             <Link
               href="/preferences"
-              className="block px-3 py-2 rounded text-sm hover:bg-gray-700 dark:hover:bg-gray-700">
+              className="block px-3 py-2 rounded text-sm hover:bg-gray-700 dark:hover:bg-gray-700"
+            >
               Preferences
             </Link>
             <Link
               href="/help"
-              className="block px-3 py-2 rounded text-sm hover:bg-gray-700 dark:hover:bg-gray-700">
+              className="block px-3 py-2 rounded text-sm hover:bg-gray-700 dark:hover:bg-gray-700"
+            >
               Help
             </Link>
           </div>

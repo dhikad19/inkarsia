@@ -2,3 +2,5 @@ Password valid: false
 Password valid: false
 Password valid: true
 Password valid: true
+Password valid: true
+Password valid: true

@@ -6,7 +6,7 @@ import { ThemeProvider } from "next-themes";
 import { ReactNode, useState } from "react";
 
 export default function Providers({ children }: { children: ReactNode }) {
-  const [client] = useState(new QueryClient());
+  const [client] = useState(() => new QueryClient());
 
   return (
     <SessionProvider>

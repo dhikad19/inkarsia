@@ -1,30 +1,21 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 
 export interface IComment extends Document {
-  post: mongoose.Types.ObjectId;
-  author: mongoose.Types.ObjectId;
-  parent?: mongoose.Types.ObjectId;
+  postId: mongoose.Types.ObjectId;
+  author: string; // bisa diganti ObjectId kalau user login
   content: string;
-  likes: mongoose.Types.ObjectId[];
   createdAt: Date;
-  updatedAt: Date;
 }
 
 const CommentSchema: Schema<IComment> = new Schema(
   {
-    post: { type: mongoose.Schema.Types.ObjectId, ref: "Post", required: true },
-    author: {
+    postId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: "Post",
       required: true,
     },
-    parent: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Comment",
-      default: null,
-    },
+    author: { type: String, required: true },
     content: { type: String, required: true },
-    likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   },
   { timestamps: true }
 );

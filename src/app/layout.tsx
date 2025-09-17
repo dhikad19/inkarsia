@@ -1,14 +1,11 @@
-"use client";
 import "./globals.css";
-import { Merriweather } from "next/font/google";
-import { useState } from "react";
+import { Inter } from "next/font/google";
 import Providers from "./providers";
-import Sidebar from "@/components/Sidebar";
-import Navbar from "@/components/Navigation";
+import SidebarWrapper from "@/components/SidebarWrapper";
 
-const merriweather = Merriweather({
+const inter = Inter({
   subsets: ["latin"],
-  weight: ["400", "700"],
+  weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
@@ -17,25 +14,11 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const [sidebarOpen, setSidebarOpen] = useState(true); // mobile show/hide
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false); // desktop collapse
-
   return (
-    <html lang="en">
-      <body className={`${merriweather.className} min-h-screen flex`}>
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${inter.className} min-h-screen flex`}>
         <Providers>
-          <Sidebar isOpen={sidebarOpen} isCollapsed={sidebarCollapsed} />
-
-          <div className="flex-1 flex flex-col min-h-screen">
-            <Navbar
-              onToggleSidebar={() => setSidebarOpen((prev) => !prev)}
-              onCollapseSidebar={() => setSidebarCollapsed((prev) => !prev)}
-            />
-
-            <main className="flex-1 p-6 bg-white dark:bg-[#0a0a0a]">
-              {children}
-            </main>
-          </div>
+          <SidebarWrapper>{children}</SidebarWrapper>
         </Providers>
       </body>
     </html>

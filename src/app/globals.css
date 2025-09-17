@@ -5,6 +5,11 @@
 html,
 body {
   @apply m-0 p-0 h-full w-full;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  line-height: 1.6;
+  font-size: 16px;
+  color: #111;
 }
 
 body {
@@ -12,7 +17,7 @@ body {
 }
 
 .dark body {
-  @apply bg-black text-white;
+  @apply bg-[#0a0a0a] text-white;
 }
 
 ::-webkit-scrollbar {
@@ -26,4 +31,26 @@ body {
 
 ::-webkit-scrollbar-track {
   @apply bg-transparent;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+button,
+.label {
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+small,
+.caption {
+  font-weight: 400;
+  line-height: 1.3;
 }
