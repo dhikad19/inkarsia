@@ -16,7 +16,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.className} min-h-screen flex`}>
+      <body
+        className={`${inter.className} min-h-screen h-screen overflow-hidden flex`}
+      >
         <Providers>
           <SidebarWrapper>{children}</SidebarWrapper>
         </Providers>

@@ -85,7 +85,7 @@ export default function Sidebar({
   return (
     <aside
       className={clsx(
-        "bg-gray-100 fixed top-0 dark:bg-[#171717] border-r border-gray-200 dark:border-gray-900 h-screen flex flex-col transition-all duration-300",
+        "bg-gray-100 sticky top-0 dark:bg-[#171717] border-r border-gray-200 dark:border-gray-900 h-screen flex flex-col transition-all duration-300",
         isCollapsed ? "w-16" : "w-64",
         !isOpen && "hidden md:flex"
       )}
@@ -97,12 +97,10 @@ export default function Sidebar({
       <nav className="flex-1 p-2 space-y-4 overflow-y-auto">
         {menuGroups.map((group) => (
           <div key={group.title}>
-            {/* Group title */}
             <div className="px-3 py-1 text-xs font-semibold uppercase text-gray-500 dark:text-gray-400">
               {group.title}
             </div>
 
-            {/* Items */}
             {group.items.map((item) =>
               item.children ? (
                 <div key={item.label}>
@@ -154,7 +152,6 @@ export default function Sidebar({
         ))}
       </nav>
 
-      {/* Settings Dropdown */}
       <div className="p-4 border-t border-gray-200 dark:border-gray-800 relative">
         <button
           ref={buttonRef}
