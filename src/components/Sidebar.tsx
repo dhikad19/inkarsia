@@ -8,6 +8,7 @@ import {
   Settings,
   ChevronDown,
   ChevronRight,
+  LogOut,
   Folder,
 } from "lucide-react";
 import { LucideIcon } from "lucide-react";
@@ -168,26 +169,30 @@ export default function Sidebar({
         {isDropdownOpen && (
           <div
             ref={panelRef}
-            className="absolute left-full bottom-0 mb-4 ml-0 w-48 rounded-md bg-gray-800 dark:bg-gray-900 shadow-lg p-2 z-20"
+            className="absolute rounded-xl border shadow-md border-gray-200 left-full bottom-0 mb-4 ml-0 w-48 dark:bg-[#171717] p-2 z-20"
           >
             <Link
               href="/profile"
-              className="block px-3 py-2 rounded text-sm hover:bg-gray-700 dark:hover:bg-gray-700"
+              className="block px-3 py-2 rounded text-sm hover:bg-gray-200 dark:hover:bg-gray-700"
             >
               Profile
             </Link>
             <Link
               href="/preferences"
-              className="block px-3 py-2 rounded text-sm hover:bg-gray-700 dark:hover:bg-gray-700"
+              className="block px-3 py-2 rounded text-sm hover:bg-gray-200 dark:hover:bg-gray-700"
             >
               Preferences
             </Link>
             <Link
               href="/help"
-              className="block px-3 py-2 rounded text-sm hover:bg-gray-700 dark:hover:bg-gray-700"
+              className="block px-3 py-2 rounded text-sm hover:bg-gray-200 dark:hover:bg-gray-700"
             >
               Help
             </Link>
+            <button className="block px-3 text-sm flex w-full py-2 rounded text-sm hover:bg-gray-200 dark:hover:bg-gray-700">
+              <LogOut className="h-4 w-4 mt-1 mr-4" />
+              Log Out
+            </button>
           </div>
         )}
       </div>
