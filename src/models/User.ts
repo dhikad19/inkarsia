@@ -6,11 +6,20 @@ const userSchema = new Schema(
     username: { type: String, required: true, unique: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
+    firstName: { type: String, required: true },
+    lastName: { type: String },
+    role: {
+      type: String,
+      enum: ["reader", "author", "designer", "developer", "client"],
+    },
+    language: { type: String, default: "en" },
+    timezone: { type: String },
+    interests: [{ type: String }],
+    photoProfile: { type: String },
   },
   { timestamps: true }
 );
 
-// Hash password before save
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
   this.password = await bcrypt.hash(this.password, 10);

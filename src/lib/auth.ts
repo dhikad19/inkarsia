@@ -5,7 +5,6 @@ import FacebookProvider from "next-auth/providers/facebook";
 import TwitterProvider from "next-auth/providers/twitter";
 import { connectDB } from "./mongodb";
 import User from "@/models/User";
-import { appendFileSync } from "fs";
 
 export const authOptions: AuthOptions = {
   session: { strategy: "jwt" },
@@ -23,15 +22,12 @@ export const authOptions: AuthOptions = {
         const user = await User.findOne({ email: credentials.email });
 
         if (!user) {
-          appendFileSync(
-            "log.txt",
-            `Login failed: user not found - ${credentials.email}\n`
-          );
+          console.log(`Login failed: user not found - ${credentials.email}`);
           return null;
         }
 
         const isValid = await user.comparePassword(credentials.password);
-        appendFileSync("log.txt", `Password valid: ${isValid}\n`);
+        console.log("log.txt", `Password valid: ${isValid}\n`);
 
         if (!isValid) return null;
 

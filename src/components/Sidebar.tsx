@@ -9,9 +9,13 @@ import {
   ChevronDown,
   ChevronRight,
   LogOut,
+  Info,
   Folder,
+  Bell,
 } from "lucide-react";
+import { useUser } from "@/app/providers";
 import { LucideIcon } from "lucide-react";
+
 import clsx from "clsx";
 type MenuItem = {
   href?: string;
@@ -24,6 +28,7 @@ type MenuGroup = {
   title: string;
   items: MenuItem[];
 };
+
 const menuGroups: MenuGroup[] = [
   {
     title: "Main",
@@ -66,7 +71,8 @@ export default function Sidebar({
     );
   };
 
-  // Tutup dropdown kalau klik di luar
+  const user = useUser();
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -91,7 +97,7 @@ export default function Sidebar({
         !isOpen && "hidden md:flex"
       )}
     >
-      <div className="p-4 font-bold text-lg truncate">
+      <div className="p-3 font-bold text-lg truncate">
         {!isCollapsed && "My App"}
       </div>
 
@@ -153,7 +159,7 @@ export default function Sidebar({
         ))}
       </nav>
 
-      <div className="p-4 border-t border-gray-200 dark:border-gray-800 relative">
+      <div className="p-3 border-t border-gray-200 dark:border-gray-800 relative">
         <button
           ref={buttonRef}
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -168,30 +174,47 @@ export default function Sidebar({
 
         {isDropdownOpen && (
           <div
+            style={{ borderRadius: "7px" }}
             ref={panelRef}
-            className="absolute rounded-xl border shadow-md border-gray-200 left-full bottom-0 mb-4 ml-0 w-48 dark:bg-[#171717] p-2 z-20"
+            className="absolute rounded-xl border shadow-md border-gray-200 left-full bottom-0 mb-4 ml-0 w-48 dark:bg-[#171717] z-20"
           >
             <Link
               href="/profile"
-              className="block px-3 py-2 rounded text-sm hover:bg-gray-200 dark:hover:bg-gray-700"
+              className="block flex px-3 py-2 rounded text-sm hover:bg-gray-200 dark:hover:bg-gray-700"
             >
-              Profile
+              <Bell className="h-4 w-4 mt-0.5 mr-4" />
+              <div className="flex flex-col">
+                <span className="truncate">{user.username}</span>
+                <span className="truncate text-xs">{user.email}</span>
+              </div>
+            </Link>
+            <hr />
+            <Link
+              href="/profile"
+              className="block flex px-3 py-2 rounded text-sm hover:bg-gray-200 dark:hover:bg-gray-700"
+            >
+              <Bell className="h-4 w-4 mt-0.5 mr-4" />
+              Notification
             </Link>
             <Link
-              href="/preferences"
-              className="block px-3 py-2 rounded text-sm hover:bg-gray-200 dark:hover:bg-gray-700"
+              href="/profile"
+              className="block flex px-3 py-2 rounded text-sm hover:bg-gray-200 dark:hover:bg-gray-700"
             >
-              Preferences
+              <Settings className="h-4 w-4 mt-0.5 mr-4" />
+              Setting
             </Link>
+            <hr />
             <Link
               href="/help"
-              className="block px-3 py-2 rounded text-sm hover:bg-gray-200 dark:hover:bg-gray-700"
+              className="block flex px-3 py-2 rounded text-sm hover:bg-gray-200 dark:hover:bg-gray-700"
             >
+              <Info className="h-4 w-4 mt-0.5 mr-4" />
               Help
             </Link>
-            <button className="block px-3 text-sm flex w-full py-2 rounded text-sm hover:bg-gray-200 dark:hover:bg-gray-700">
-              <LogOut className="h-4 w-4 mt-1 mr-4" />
-              Log Out
+            <hr />
+            <button className="block px-3 flex w-full py-2 rounded text-sm hover:bg-gray-200 dark:hover:bg-gray-700">
+              <LogOut className="h-4 w-4 mt-0.5 mr-4" />
+              <span className="text-sm">Log Out</span>
             </button>
           </div>
         )}
