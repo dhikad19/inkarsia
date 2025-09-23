@@ -14,7 +14,9 @@ import {
   Bell,
 } from "lucide-react";
 import { useUser } from "@/app/providers";
-import { LucideIcon } from "lucide-react";
+import { LucideIcon, ChevronsUpDown } from "lucide-react";
+import Image from "next/image";
+import { useTheme } from "next-themes";
 
 import clsx from "clsx";
 type MenuItem = {
@@ -64,6 +66,7 @@ export default function Sidebar({
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
+  const { theme } = useTheme();
 
   const toggleGroup = (label: string) => {
     setOpenGroups((prev) =>
@@ -97,17 +100,44 @@ export default function Sidebar({
         !isOpen && "hidden md:flex"
       )}
     >
-      <div className="p-3 font-bold text-lg truncate">
-        {!isCollapsed && "My App"}
+      <div className="p-3 truncate flex justify-between items-center">
+        <div className="flex">
+          <Image
+            src={
+              theme === "dark"
+                ? "/assets/logo-dark.png"
+                : "/assets/logo-light.png"
+            }
+            style={{ objectFit: "contain" }}
+            alt="Morials"
+            className={!isCollapsed ? "ml-2" : ""}
+            width={38}
+            height={33}
+          />
+          {!isCollapsed && (
+            <>
+              <div className="ml-3 mb-0.5">
+                <h4 className="text-md font-bold leading-none mt-1 mb-0">
+                  Morials Project
+                </h4>
+                <div className="text-sm mt-0.5">Sketch</div>
+              </div>
+            </>
+          )}
+        </div>
+        {!isCollapsed && <ChevronsUpDown className="w-4 h-4" />}
       </div>
 
-      <nav className="flex-1 p-2 space-y-4 overflow-y-auto">
+      <nav
+        className={`flex-1 p-2 overflow-y-auto transition duration-0 ${
+          !isCollapsed ? "space-y-4" : ""
+        }`}
+      >
         {menuGroups.map((group) => (
           <div key={group.title}>
-            <div className="px-3 py-1 text-xs font-semibold uppercase text-gray-500 dark:text-gray-400">
-              {group.title}
-            </div>
-
+            {!isCollapsed && (
+              <div className="px-3 py-1 text-sm">{group.title}</div>
+            )}
             {group.items.map((item) =>
               item.children ? (
                 <div key={item.label}>
@@ -148,7 +178,7 @@ export default function Sidebar({
                 <Link
                   key={item.href}
                   href={item.href!}
-                  className="flex items-center gap-3 px-3 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-800"
+                  className="flex items-center gap-3 px-3 text-md py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-800"
                 >
                   <item.icon className="w-5 h-5" />
                   {!isCollapsed && <span>{item.label}</span>}
