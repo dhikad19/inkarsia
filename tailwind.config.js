@@ -9,24 +9,45 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
-        card: "var(--card)",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
+        },
         "card-foreground": "var(--card-foreground)",
-        popover: "var(--popover)",
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
+        },
         "popover-foreground": "var(--popover-foreground)",
-        primary: "var(--primary)",
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
+        },
         "primary-foreground": "var(--primary-foreground)",
-        secondary: "var(--secondary)",
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
+        },
         "secondary-foreground": "var(--secondary-foreground)",
-        muted: "var(--muted)",
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
+        },
         "muted-foreground": "var(--muted-foreground)",
-        accent: "var(--accent)",
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
+        },
         "accent-foreground": "var(--accent-foreground)",
-        destructive: "var(--destructive)",
-        border: "var(--border)",
-        input: "var(--input)",
-        ring: "var(--ring)",
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
+        },
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
         sidebar: "var(--sidebar)",
         "sidebar-foreground": "var(--sidebar-foreground)",
         "sidebar-primary": "var(--sidebar-primary)",
@@ -40,6 +61,13 @@ module.exports = {
         "chart-3": "var(--chart-3)",
         "chart-4": "var(--chart-4)",
         "chart-5": "var(--chart-5)",
+        chart: {
+          1: "hsl(var(--chart-1))",
+          2: "hsl(var(--chart-2))",
+          3: "hsl(var(--chart-3))",
+          4: "hsl(var(--chart-4))",
+          5: "hsl(var(--chart-5))",
+        },
       },
       borderRadius: {
         sm: "calc(var(--radius) - 4px)",
@@ -53,5 +81,5 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [require("tailwindcss-animate")],
 };
