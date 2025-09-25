@@ -1,13 +1,7 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
-import Providers from "./providers";
-import SidebarWrapper from "@/components/SidebarWrapper";
 
-const inter = Inter({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  display: "swap",
-});
+const inter = Inter({ subsets: ["latin"], display: "swap" });
 
 export default function RootLayout({
   children,
@@ -16,13 +10,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${inter.className} min-h-screen h-screen overflow-hidden flex`}
-      >
-        <Providers>
-          <SidebarWrapper>{children}</SidebarWrapper>
-        </Providers>
-      </body>
+      <body className={inter.className}>{children}</body>
     </html>
   );
 }

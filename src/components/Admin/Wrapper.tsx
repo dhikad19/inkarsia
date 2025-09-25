@@ -1,14 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import Sidebar from "@/components/Sidebar";
-import Navbar from "@/components/Navigation";
+import Sidebar from "./Sidebar";
+import Navbar from "./Navigation";
 
-export default function SidebarWrapper({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function Wrapper({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 

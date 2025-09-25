@@ -13,7 +13,6 @@ export default function Navbar({
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
-  // Menandakan komponen sudah di-mount di client
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -38,7 +37,6 @@ export default function Navbar({
         <span className="font-semibold">Dashboard</span>
       </div>
 
-      {/* Dark Mode Toggle */}
       {mounted && (
         <button
           onClick={() => setTheme(theme === "dark" ? "light" : "dark")}

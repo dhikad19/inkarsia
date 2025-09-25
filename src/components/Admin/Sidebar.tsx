@@ -203,7 +203,7 @@ export default function Sidebar({
         ))}
       </nav>
 
-      <div className="p-3 border-t border-border relative">
+      <div className="p-2 border-t border-border relative">
         <button
           ref={buttonRef}
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
