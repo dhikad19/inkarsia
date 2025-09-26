@@ -13,19 +13,36 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Moon, Sun, User, Menu } from "lucide-react";
 import { useTheme } from "next-themes";
 import { NavigationMenuDropdown } from "./Menu";
+import Image from "next/image";
 
 export default function PublicHeader() {
-  const { setTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
 
   return (
     <header className="w-full border-b bg-white dark:bg-[#0a0a0a]">
-      <nav className="mx-auto flex justify-between items-center py-3 px-6">
-        <h1 className="text-lg font-bold">My UI/UX Site</h1>
+      <nav className="mx-auto flex justify-between items-center py-3 px-4 sm:px-6 lg:px-20">
+        <div className="flex items-center flex-1">
+          <Image
+            src={
+              theme === "dark"
+                ? "/assets/logo-dark.png"
+                : "/assets/logo-light.png"
+            }
+            style={{ objectFit: "contain" }}
+            alt="Morials"
+            width={38}
+            height={33}
+          />
+          <h4 className="text-md font-bold leading-none ml-2 mb-0">
+            Morials Project
+          </h4>
+        </div>
 
-        <NavigationMenuDropdown />
+        <div className="flex-1 flex justify-center">
+          <NavigationMenuDropdown />
+        </div>
 
-        <div className="hidden md:flex items-center gap-4">
-          {/* Theme toggle */}
+        <div className="hidden flex-1 justify-end md:flex items-center gap-4">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="icon">

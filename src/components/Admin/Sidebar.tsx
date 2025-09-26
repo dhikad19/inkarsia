@@ -120,7 +120,7 @@ export default function Sidebar({
               <h4 className="text-md font-bold leading-none mt-1 mb-0">
                 Morials Project
               </h4>
-              <div className="text-sm mt-0.5 text-muted-foreground">Sketch</div>
+              <div className="text-sm mt-0.5 text-muted-foreground">Admin</div>
             </div>
           )}
         </div>

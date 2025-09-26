@@ -18,7 +18,7 @@ export default function PublicLayout({
       <body className={`${inter.className} min-h-screen`}>
         <Providers>
           <Header />
-          <main className="mx-auto p-6">{children}</main>
+          <main className="mx-auto px-4 sm:px-6 lg:px-20">{children}</main>
         </Providers>
       </body>
     </html>

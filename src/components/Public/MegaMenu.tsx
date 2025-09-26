@@ -35,21 +35,20 @@ export default function MegaMenu() {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [carouselIndex, setCarouselIndex] = useState(0);
 
-  // Auto ganti gambar tiap 2.5 detik saat panel aktif
   useEffect(() => {
     if (activeIndex !== null) {
       const interval = setInterval(() => {
         setCarouselIndex(
           (prev) => (prev + 1) % menuItems[activeIndex].previews.length
         );
-      }, 1500);
+      }, 1100);
       return () => clearInterval(interval);
     }
   }, [activeIndex]);
 
   const handleMouseEnter = (index: number) => {
     setActiveIndex(index);
-    setCarouselIndex(0); // reset ke awal tiap kali menu baru dihover
+    setCarouselIndex(0);
   };
 
   const handleMouseLeave = () => setActiveIndex(null);
@@ -58,8 +57,7 @@ export default function MegaMenu() {
 
   return (
     <div className="relative w-full">
-      {/* Top Navbar */}
-      <div className="flex gap-8 px-8 py-4 bg-neutral-900 text-white">
+      <div className="flex gap-8 px-8 py-4">
         {menuItems.map((item, index) => (
           <button
             key={index}
@@ -73,7 +71,6 @@ export default function MegaMenu() {
         ))}
       </div>
 
-      {/* Floating Mega Menu Panel */}
       <AnimatePresence>
         {activeIndex !== null && (
           <motion.div
@@ -99,9 +96,6 @@ export default function MegaMenu() {
                   src={menuItems[activeIndex].previews[carouselIndex]}
                   alt="Preview"
                   className="w-full h-full object-cover"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
                 />
               </AnimatePresence>
             </div>
