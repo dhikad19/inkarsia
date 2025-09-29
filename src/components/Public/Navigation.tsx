@@ -10,17 +10,23 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Moon, Sun, User, Menu } from "lucide-react";
+import { Moon, Sun, User, Menu, GalleryHorizontal } from "lucide-react";
 import { useTheme } from "next-themes";
 import { NavigationMenuDropdown } from "./Menu";
 import Image from "next/image";
+import { useState } from "react";
 
 export default function PublicHeader() {
   const { theme, setTheme } = useTheme();
+  const [open, setOpen] = useState(false);
 
   return (
     <header className="w-full border-b bg-white dark:bg-[#0a0a0a]">
-      <nav className="mx-auto flex justify-between items-center py-3 px-4 sm:px-6 lg:px-20">
+      <nav
+        className={`mx-auto flex justify-between items-center py-3 ${
+          open ? "max-w-7xl px-2" : "px-4 sm:px-6 lg:px-20"
+        }`}
+      >
         <div className="flex items-center flex-1">
           <Image
             src={
@@ -30,12 +36,11 @@ export default function PublicHeader() {
             }
             style={{ objectFit: "contain" }}
             alt="Morials"
-            width={38}
-            height={33}
+            width={25}
+            height={25}
+            unoptimized
           />
-          <h4 className="text-md font-bold leading-none ml-2 mb-0">
-            Morials Project
-          </h4>
+          <h4 className="text-md font-bold leading-none ml-1 mb-0">Inkarsa</h4>
         </div>
 
         <div className="flex-1 flex justify-center">
@@ -43,6 +48,13 @@ export default function PublicHeader() {
         </div>
 
         <div className="hidden flex-1 justify-end md:flex items-center gap-4">
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => setOpen((prev) => !prev)}
+          >
+            <GalleryHorizontal className="h-5 w-5" />
+          </Button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="icon">
@@ -65,7 +77,6 @@ export default function PublicHeader() {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          {/* User Menu */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="icon">

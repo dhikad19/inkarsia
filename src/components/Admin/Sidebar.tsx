@@ -112,13 +112,13 @@ export default function Sidebar({
             style={{ objectFit: "contain" }}
             alt="Morials"
             className={!isCollapsed ? "ml-2" : ""}
-            width={38}
-            height={33}
+            width={35}
+            height={35}
           />
           {!isCollapsed && (
             <div className="ml-3 mb-0.5">
               <h4 className="text-md font-bold leading-none mt-1 mb-0">
-                Morials Project
+                Inkarsa
               </h4>
               <div className="text-sm mt-0.5 text-muted-foreground">Admin</div>
             </div>
