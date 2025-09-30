@@ -14,27 +14,20 @@ import { Moon, Sun, User, Menu, GalleryHorizontal } from "lucide-react";
 import { useTheme } from "next-themes";
 import { NavigationMenuDropdown } from "./Menu";
 import Image from "next/image";
-import { useState } from "react";
 
 export default function PublicHeader() {
   const { theme, setTheme } = useTheme();
-  const [open, setOpen] = useState(false);
 
   return (
     <header className="w-full border-b bg-white dark:bg-[#0a0a0a]">
-      <nav
-        className={`mx-auto flex justify-between items-center py-3 ${
-          open ? "max-w-7xl px-2" : "px-4 sm:px-6 lg:px-20"
-        }`}
-      >
+      <nav className="mx-auto flex justify-between items-center py-3 px-4 sm:px-6 lg:px-20">
         <div className="flex items-center flex-1">
           <Image
             src={
               theme === "dark"
-                ? "/assets/logo-dark.png"
-                : "/assets/logo-light.png"
+                ? "/assets/logo-dark-small.png"
+                : "/assets/logo-light-small.png"
             }
-            style={{ objectFit: "contain" }}
             alt="Morials"
             width={25}
             height={25}
