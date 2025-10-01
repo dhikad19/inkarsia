@@ -5,12 +5,22 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
-import { ArrowUp, ArrowDown, X } from "lucide-react";
+import { ArrowUp, ArrowDown, X, Plus, RotateCcw } from "lucide-react";
 
 interface Props {
   layers: ShadowLayer[];
   onChange: (layers: ShadowLayer[]) => void;
 }
+
+const defaultLayer: ShadowLayer = {
+  offsetX: 0,
+  offsetY: 4,
+  blur: 10,
+  spread: 0,
+  color: "#000000",
+  opacity: 0.25,
+  inset: false,
+};
 
 export default function BoxShadowControls({ layers, onChange }: Props) {
   const updateLayer = (i: number, key: keyof ShadowLayer, value: any) => {
@@ -25,6 +35,14 @@ export default function BoxShadowControls({ layers, onChange }: Props) {
     if (target < 0 || target >= layers.length) return;
     [newLayers[i], newLayers[target]] = [newLayers[target], newLayers[i]];
     onChange(newLayers);
+  };
+
+  const addLayer = () => {
+    onChange([...layers, { ...defaultLayer }]);
+  };
+
+  const resetLayers = () => {
+    onChange([{ ...defaultLayer }]);
   };
 
   return (
@@ -178,6 +196,16 @@ export default function BoxShadowControls({ layers, onChange }: Props) {
           </div>
         </div>
       ))}
+
+      {/* Action Buttons */}
+      <div className="flex gap-2">
+        <Button variant="outline" onClick={addLayer}>
+          <Plus className="h-4 w-4 mr-1" /> Add Layer
+        </Button>
+        <Button variant="outline" onClick={resetLayers}>
+          <RotateCcw className="h-4 w-4 mr-1" /> Reset
+        </Button>
+      </div>
     </div>
   );
 }
