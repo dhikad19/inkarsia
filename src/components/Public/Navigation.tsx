@@ -25,8 +25,8 @@ export default function PublicHeader() {
           <Image
             src={
               theme === "dark"
-                ? "/assets/logo-dark-small.png"
-                : "/assets/logo-light-small.png"
+                ? "/assets/logo-inkarsa-light.svg"
+                : "/assets/logo-inkarsa-dark.svg"
             }
             alt="Morials"
             width={25}

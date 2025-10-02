@@ -2,11 +2,11 @@
 import React, { useEffect, useState } from "react";
 import { GradientState } from "@/lib/types";
 import { defaultStops, uid } from "@/lib/gradient";
-import GradientPreview from "@/components/gradient-mixer/GradientPreview";
-import GradientControls from "@/components/gradient-mixer/GradientControls";
-import ColorStops from "@/components/gradient-mixer/ColorStops";
-import PresetGradients from "@/components/gradient-mixer/PresetGradients";
-import GeneratedCss from "@/components/gradient-mixer/GeneratedCss";
+import GradientPreview from "@/components/Public/Tools/GradientMixer/GradientPreview";
+import GradientControls from "@/components/Public/Tools/GradientMixer/GradientControls";
+import ColorStops from "@/components/Public/Tools/GradientMixer/ColorStops";
+import PresetGradients from "@/components/Public/Tools/GradientMixer/PresetGradient";
+import GeneratedCss from "@/components/Public/Tools/GradientMixer/GenerateCss";
 
 const initialState: GradientState = {
   type: "linear",
@@ -19,16 +19,13 @@ const initialState: GradientState = {
 export default function Page() {
   const [state, setState] = useState<GradientState>(initialState);
 
-  // load state from ?g=... if present (share)
   useEffect(() => {
     try {
       const params = new URLSearchParams(window.location.search);
       const g = params.get("g");
       if (g) {
         const parsed = JSON.parse(decodeURIComponent(g));
-        // ensure basic shape
         if (parsed && parsed.stops) {
-          // ensure ids
           const stops = parsed.stops.map((s: any) => ({
             ...s,
             id: s.id ?? uid("s"),
@@ -36,10 +33,7 @@ export default function Page() {
           setState({ ...initialState, ...parsed, stops });
         }
       }
-    } catch (e) {
-      // ignore
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    } catch (e) {}
   }, []);
 
   const applyPreset = (p: Partial<GradientState>) => {
