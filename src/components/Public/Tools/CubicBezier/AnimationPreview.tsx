@@ -60,7 +60,7 @@ export default function AnimationPreview({
           style={{
             animationName: "moveX",
             animationDuration: `${duration}s`,
-            animationTimingFunction: bezier, // ⬅️ ini hasil curve editor
+            animationTimingFunction: bezier,
             animationIterationCount: "infinite",
             animationDirection: "alternate",
             animationPlayState: playing ? "running" : "paused",
@@ -68,7 +68,6 @@ export default function AnimationPreview({
         />
       </div>
 
-      {/* Keyframes */}
       <style jsx>{`
         @keyframes moveX {
           from {
