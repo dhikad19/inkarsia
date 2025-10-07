@@ -1,5 +1,6 @@
 import MegaMenu from "@/components/Public/MegaMenu";
-
+import ChatBot from "@/components/Public/ChatBot";
+import { SubscribeButton } from "@/components/Public/NotificationButton";
 export default function HomePage() {
   return (
     <section className="space-y-6">
@@ -8,7 +9,7 @@ export default function HomePage() {
       <p className="text-gray-600 dark:text-gray-300">
         Explore design inspirations, UI components, and UX case studies.
       </p>
-
+      <SubscribeButton />
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
         <div className="p-4 bg-gray-100 dark:bg-gray-800 rounded-lg shadow">
           <h2 className="text-lg font-semibold">Latest Articles</h2>
@@ -29,6 +30,7 @@ export default function HomePage() {
           </p>
         </div>
       </div>
+      <ChatBot />
     </section>
   );
 }

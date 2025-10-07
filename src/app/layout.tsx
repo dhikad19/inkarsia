@@ -1,5 +1,6 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
+import { OneSignalInit } from "@/components/OneSignalInit"; // Pastikan path-nya sesuai
 
 const inter = Inter({ subsets: ["latin"], display: "swap" });
 
@@ -10,7 +11,16 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>{children}</body>
+      <head>
+        <script
+          src="https://cdn.onesignal.com/sdks/OneSignalSDK.js"
+          async
+        ></script>
+      </head>
+      <body className={inter.className}>
+        <OneSignalInit />
+        {children}
+      </body>
     </html>
   );
 }

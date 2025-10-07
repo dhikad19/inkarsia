@@ -1,0 +1,58 @@
+export const presets = [
+  {
+    name: "Vintage",
+    values: {
+      brightness: 110,
+      contrast: 90,
+      saturate: 70,
+      sepia: 30,
+      grayscale: 0,
+      invert: 0,
+      hue: 0,
+      opacity: 100,
+      blur: 0,
+    },
+  },
+  {
+    name: "Grayscale",
+    values: {
+      brightness: 100,
+      contrast: 100,
+      saturate: 0,
+      sepia: 0,
+      grayscale: 100,
+      invert: 0,
+      hue: 0,
+      opacity: 100,
+      blur: 0,
+    },
+  },
+  {
+    name: "Vibrant",
+    values: {
+      brightness: 110,
+      contrast: 110,
+      saturate: 150,
+      sepia: 0,
+      grayscale: 0,
+      invert: 0,
+      hue: 10,
+      opacity: 100,
+      blur: 0,
+    },
+  },
+  {
+    name: "Cool",
+    values: {
+      brightness: 100,
+      contrast: 100,
+      saturate: 100,
+      sepia: 0,
+      grayscale: 0,
+      invert: 0,
+      hue: 180,
+      opacity: 100,
+      blur: 0,
+    },
+  },
+];
