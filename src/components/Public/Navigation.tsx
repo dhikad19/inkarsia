@@ -24,16 +24,15 @@ export default function PublicHeader() {
         <div className="flex items-center flex-1">
           <Image
             src={
-              theme === "dark"
-                ? "/assets/logo-inkarsa-light.svg"
-                : "/assets/logo-inkarsa-dark.svg"
+              theme !== "dark"
+                ? "/assets/logo-large-black.svg"
+                : "/assets/logo-large-white.svg"
             }
             alt="Morials"
-            width={25}
-            height={25}
+            width={79}
+            height={35}
             unoptimized
           />
-          <h4 className="text-md font-bold leading-none ml-1 mb-0">Inkarsa</h4>
         </div>
 
         <div className="flex-1 flex justify-center">
@@ -44,8 +43,7 @@ export default function PublicHeader() {
           <Button
             variant="outline"
             size="icon"
-            onClick={() => setOpen((prev) => !prev)}
-          >
+            onClick={() => setOpen((prev) => !prev)}>
             <GalleryHorizontal className="h-5 w-5" />
           </Button>
           <DropdownMenu>

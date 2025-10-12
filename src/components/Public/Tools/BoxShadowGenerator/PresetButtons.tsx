@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { ShadowLayer } from "@/lib/types";
 import { Button } from "@/components/ui/button";
-import { parseHexColor } from "@/utils/color";
+import { parseHexColor } from "@/utils/colors";
 
 interface Props {
   onSelect: (layers: ShadowLayer[]) => void;
@@ -193,8 +193,7 @@ export default function PresetButtons({ onSelect }: Props) {
           key={p.name}
           size="sm"
           variant={active === p.name ? "default" : "secondary"}
-          onClick={() => handleClick(p.name, p.layers)}
-        >
+          onClick={() => handleClick(p.name, p.layers)}>
           {p.name}
         </Button>
       ))}
