@@ -19,7 +19,7 @@ export default function PublicHeader() {
   const { theme, setTheme } = useTheme();
 
   return (
-    <header className="w-full border-b bg-white dark:bg-[#0a0a0a]">
+    <header className="w-full border-b bg-white sticky top-0 dark:bg-[#0a0a0a] z-[60]">
       <nav className="mx-auto flex justify-between items-center py-3 px-4 sm:px-6 lg:px-20">
         <div className="flex items-center flex-1">
           <Image
@@ -28,7 +28,7 @@ export default function PublicHeader() {
                 ? "/assets/logo-large-black.svg"
                 : "/assets/logo-large-white.svg"
             }
-            alt="Morials"
+            alt="Inkarsa"
             width={79}
             height={35}
             unoptimized
@@ -43,7 +43,8 @@ export default function PublicHeader() {
           <Button
             variant="outline"
             size="icon"
-            onClick={() => setOpen((prev) => !prev)}>
+            onClick={() => setOpen((prev) => !prev)}
+          >
             <GalleryHorizontal className="h-5 w-5" />
           </Button>
           <DropdownMenu>
