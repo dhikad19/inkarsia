@@ -16,6 +16,8 @@ const userSchema = new Schema(
     timezone: { type: String },
     interests: [{ type: String }],
     photoProfile: { type: String },
+    isPro: { type: Boolean, default: false },
+    proExpiresAt: { type: Date },
   },
   { timestamps: true }
 );
