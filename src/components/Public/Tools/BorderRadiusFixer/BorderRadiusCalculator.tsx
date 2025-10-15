@@ -11,11 +11,9 @@ export function BorderRadiusCalculator() {
   const [padding, setPadding] = useState(16);
   const [childRadius, setChildRadius] = useState(12);
 
-  // 🔹 Formula dua arah:
   const suggestedChild = Math.max(0, parentRadius - padding / 2);
   const suggestedParent = childRadius + padding / 2;
 
-  // 🔹 Fungsi untuk auto adjust
   const adjustChild = () => setChildRadius(suggestedChild);
   const adjustParent = () => setParentRadius(suggestedParent);
 
