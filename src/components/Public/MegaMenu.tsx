@@ -64,7 +64,7 @@ export default function MegaMenu() {
             onMouseEnter={() => handleMouseEnter(index)}
             onMouseLeave={handleMouseLeave}
             onMouseMove={handleMouseMove}
-            className="relative text-sm font-medium hover:opacity-80"
+            className="relative text-sm font-medium hover:opacity-80 transition"
           >
             {item.title}
           </button>
@@ -81,21 +81,21 @@ export default function MegaMenu() {
             transition={{ duration: 0.15 }}
             className="fixed z-50 pointer-events-none"
             style={{
-              left: mousePos.x + 12,
-              top: mousePos.y + 16,
+              left: mousePos.x + 8,
+              top: mousePos.y + 10,
             }}
           >
-            <div
-              className="rounded-xl bg-black overflow-hidden shadow-2xl w-[320px] h-[200px] pointer-events-auto"
-              onMouseEnter={() => handleMouseEnter(activeIndex!)}
-              onMouseLeave={handleMouseLeave}
-            >
+            <div className="rounded-xl overflow-hidden shadow-2xl w-[300px] h-[180px] bg-black/90 border border-white/10">
               <AnimatePresence mode="wait">
                 <motion.img
                   key={menuItems[activeIndex].previews[carouselIndex]}
                   src={menuItems[activeIndex].previews[carouselIndex]}
                   alt="Preview"
                   className="w-full h-full object-cover"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.4 }}
                 />
               </AnimatePresence>
             </div>
