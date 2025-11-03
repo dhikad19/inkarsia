@@ -59,6 +59,7 @@ export default function BrokenBox({ state, fixedKeys }: Props) {
         </motion.div>
       </motion.div>
 
+      {/* label error muncul di sekitar box */}
       <AnimatePresence>
         {LABELS.map(({ key, text, pos }) =>
           !fixedKeys.includes(key) ? (
@@ -69,7 +70,7 @@ export default function BrokenBox({ state, fixedKeys }: Props) {
               exit={{ opacity: 0, scale: 0.8 }}
               transition={{ duration: 0.4 }}
               className={`absolute ${pos} bg-red-600/90 text-white px-2 py-1 rounded-md text-xs font-mono shadow-md pointer-events-none`}
-              style={{ transform: "translateZ(0)" }}
+              style={{ transform: "translateZ(0)" }} // biar gak ikut rotasi
             >
               ⚠ {key}: {text}
             </motion.div>

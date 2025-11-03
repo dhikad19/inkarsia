@@ -25,12 +25,12 @@ export default function PublicHeader() {
           <Image
             src={
               theme !== "dark"
-                ? "/assets/logo-large-black.svg"
-                : "/assets/logo-large-white.svg"
+                ? "/assets/logo-very-small-black.svg"
+                : "/assets/logo-very-small-white.svg"
             }
             alt="Inkarsa"
-            width={79}
-            height={35}
+            width={26}
+            height={26}
             unoptimized
           />
         </div>

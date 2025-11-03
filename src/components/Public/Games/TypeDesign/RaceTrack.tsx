@@ -23,7 +23,6 @@ export default function RaceTrack({ racers }: { racers: Racer[] }) {
             key={idx}
             className="relative bg-gray-900 rounded-xl h-20 overflow-hidden border border-gray-700 shadow-inner"
           >
-            {/* progress bar */}
             <div
               className="absolute top-0 left-0 h-full transition-all duration-300"
               style={{
