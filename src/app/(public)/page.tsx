@@ -1,6 +1,7 @@
 import MegaMenu from "@/components/Public/MegaMenu";
 import ChatBot from "@/components/Public/ChatBot";
 import Footer from "@/components/Public/Footer";
+import ToolsList from "@/components/Public/ToolsList";
 import { SubscribeButton } from "@/components/Public/NotificationButton";
 export default function HomePage() {
   return (
@@ -31,6 +32,7 @@ export default function HomePage() {
           </p>
         </div>
       </div>
+      <ToolsList />
       <ChatBot />
       <Footer />
     </section>
