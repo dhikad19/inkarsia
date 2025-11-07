@@ -15,13 +15,33 @@ import {
   Ruler,
   Palette,
   Search,
+  Grid,
+  Image,
+  Droplet,
+  Shapes,
+  Contrast,
+  Activity,
+  Gauge,
+  Layers,
+  Sparkles,
+  LucideIcon,
 } from "lucide-react";
 
 export default function ToolsList() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
 
-  const categories = ["All", "UI", "Color", "Icon", "Typography", "Utility"];
+  const categories = [
+    "All",
+    "UI",
+    "Color",
+    "Icon",
+    "Typography",
+    "Utility",
+    "Layout",
+    "Image",
+    "Animation",
+  ];
 
   const tools = [
     {
@@ -30,6 +50,7 @@ export default function ToolsList() {
       description:
         "Easily calculate and maintain consistent aspect ratios for your layouts and images.",
       category: "Utility",
+      icon: Ruler,
     },
     {
       name: "Border Radius Fixer",
@@ -37,6 +58,7 @@ export default function ToolsList() {
       description:
         "Automatically harmonize corner radii across multiple elements to keep your UI consistent.",
       category: "UI",
+      icon: Wrench,
     },
     {
       name: "Border Radius Calculator",
@@ -44,6 +66,7 @@ export default function ToolsList() {
       description:
         "Find precise border-radius values and visual previews for your rounded components.",
       category: "UI",
+      icon: Ruler,
     },
     {
       name: "Box Shadow Generator",
@@ -51,6 +74,7 @@ export default function ToolsList() {
       description:
         "Generate smooth, realistic CSS box shadows with live preview and fine-tuning controls.",
       category: "UI",
+      icon: Layers,
     },
     {
       name: "Clamp Generator",
@@ -58,6 +82,7 @@ export default function ToolsList() {
       description:
         "Build responsive CSS clamp() values for fluid typography, spacing, and sizing.",
       category: "Typography",
+      icon: Type,
     },
     {
       name: "Color Blind Palette Suggestion",
@@ -65,6 +90,7 @@ export default function ToolsList() {
       description:
         "Generate accessible color palettes that remain distinguishable for color-blind users.",
       category: "Color",
+      icon: Droplet,
     },
     {
       name: "Color Contrast Checker",
@@ -72,6 +98,7 @@ export default function ToolsList() {
       description:
         "Check color contrast ratios to ensure WCAG-compliant text readability and accessibility.",
       category: "Color",
+      icon: Contrast,
     },
     {
       name: "Cubic Bezier Editor",
@@ -79,6 +106,7 @@ export default function ToolsList() {
       description:
         "Visualize and fine-tune CSS cubic-bezier easing functions for smooth animations.",
       category: "Animation",
+      icon: Activity,
     },
     {
       name: "Feature Detection Tool",
@@ -86,6 +114,7 @@ export default function ToolsList() {
       description:
         "Quickly check browser support for modern web APIs, CSS features, and JavaScript methods.",
       category: "Utility",
+      icon: Gauge,
     },
     {
       name: "Flexbox Playground",
@@ -93,6 +122,7 @@ export default function ToolsList() {
       description:
         "Experiment with CSS Flexbox layouts interactively and learn how properties affect alignment.",
       category: "Layout",
+      icon: LayoutGrid,
     },
     {
       name: "Gradient Mixer",
@@ -100,6 +130,7 @@ export default function ToolsList() {
       description:
         "Blend multiple colors to create smooth, layered gradients for backgrounds and effects.",
       category: "Color",
+      icon: Palette,
     },
     {
       name: "Grid Area Mapper",
@@ -107,6 +138,7 @@ export default function ToolsList() {
       description:
         "Design and visualize CSS Grid area layouts interactively with live code output.",
       category: "Layout",
+      icon: Grid,
     },
     {
       name: "Image Enhancer",
@@ -114,6 +146,7 @@ export default function ToolsList() {
       description:
         "Enhance image sharpness, contrast, and brightness directly in the browser using AI filters.",
       category: "Image",
+      icon: Sparkles,
     },
     {
       name: "Image Filter Playground",
@@ -121,6 +154,7 @@ export default function ToolsList() {
       description:
         "Play with CSS filter effects like blur, contrast, and hue-rotate on your images in real-time.",
       category: "Image",
+      icon: Image,
     },
     {
       name: "Palette Generator",
@@ -128,6 +162,7 @@ export default function ToolsList() {
       description:
         "Generate cohesive color palettes from an image or base color using multiple harmony rules.",
       category: "Color",
+      icon: Paintbrush,
     },
     {
       name: "Subgrid Visualizer",
@@ -135,6 +170,7 @@ export default function ToolsList() {
       description:
         "Understand how CSS Subgrid works by visualizing parent and child grid alignments.",
       category: "Layout",
+      icon: Grid,
     },
     {
       name: "Clip Path Shapes",
@@ -142,6 +178,7 @@ export default function ToolsList() {
       description:
         "Generate and preview custom CSS clip-path shapes with intuitive drag controls.",
       category: "UI",
+      icon: Shapes,
     },
     {
       name: "Glassmorphism Generator",
@@ -149,6 +186,7 @@ export default function ToolsList() {
       description:
         "Create modern glass-like UI components with blur, transparency, and layered effects.",
       category: "UI",
+      icon: Wand2,
     },
     {
       name: "Metallic Generator",
@@ -156,67 +194,9 @@ export default function ToolsList() {
       description:
         "Design metallic gradients and textures for buttons, icons, and surfaces using CSS layers.",
       category: "UI",
+      icon: Sparkles,
     },
   ];
-
-  // const tools = [
-  //   {
-  //     name: "Border Radius Harmonizer",
-  //     description: "Samakan border radius antar elemen agar tampak seimbang.",
-  //     icon: Ruler,
-  //     category: "UI",
-  //     url: "/tools/border-radius-harmonizer",
-  //   },
-  //   {
-  //     name: "Color Palette Extractor",
-  //     description: "Ambil palet warna dari gambar atau desain.",
-  //     icon: Palette,
-  //     category: "Color",
-  //     url: "/tools/color-palette-extractor",
-  //   },
-  //   {
-  //     name: "Icon Resizer",
-  //     description: "Ubah ukuran icon SVG secara proporsional dengan cepat.",
-  //     icon: Scissors,
-  //     category: "Icon",
-  //     url: "/tools/icon-resizer",
-  //   },
-  //   {
-  //     name: "UI Layout Grid Maker",
-  //     description: "Buat grid responsif untuk desain antarmuka.",
-  //     icon: LayoutGrid,
-  //     category: "UI",
-  //     url: "/tools/layout-grid-maker",
-  //   },
-  //   {
-  //     name: "Typography Scale Helper",
-  //     description: "Bangun hierarki teks yang harmonis dengan skala tipografi.",
-  //     icon: Type,
-  //     category: "Typography",
-  //     url: "/tools/typography-scale-helper",
-  //   },
-  //   {
-  //     name: "Shadow Generator",
-  //     description: "Ciptakan bayangan realistis untuk komponen UI.",
-  //     icon: Wand2,
-  //     category: "UI",
-  //     url: "/tools/shadow-generator",
-  //   },
-  //   {
-  //     name: "Component Inspector",
-  //     description: "Periksa jarak dan ukuran antar komponen desain.",
-  //     icon: Wrench,
-  //     category: "Utility",
-  //     url: "/tools/component-inspector",
-  //   },
-  //   {
-  //     name: "Hue Shift Tool",
-  //     description: "Eksperimen dengan rotasi hue untuk variasi warna.",
-  //     icon: Paintbrush,
-  //     category: "Color",
-  //     url: "/tools/hue-shift-tool",
-  //   },
-  // ];
 
   const filteredTools = tools.filter((tool) => {
     const matchesCategory =
@@ -227,7 +207,6 @@ export default function ToolsList() {
     return matchesCategory && matchesSearch;
   });
 
-  // Tentukan jumlah kolom berdasarkan jumlah hasil
   const gridColsClass =
     filteredTools.length >= 4
       ? "lg:grid-cols-4 sm:grid-cols-2 grid-cols-1"
@@ -271,7 +250,7 @@ export default function ToolsList() {
       {/* Tools Grid */}
       <div className={`grid gap-4 ${gridColsClass}`}>
         {filteredTools.map((tool, index) => {
-          const Icon = tool.icon;
+          const Icon = tool.icon as LucideIcon;
           return (
             <Card
               key={index}
@@ -291,7 +270,7 @@ export default function ToolsList() {
                 </div>
                 <div className="mt-4">
                   <Button variant="outline" asChild className="w-full">
-                    <Link href={tool.url}>Open Tool</Link>
+                    <Link href={`/${tool.slug}`}>Open Tool</Link>
                   </Button>
                 </div>
               </CardContent>
