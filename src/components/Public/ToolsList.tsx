@@ -227,7 +227,7 @@ export default function ToolsList() {
               key={cat}
               variant={activeCategory === cat ? "default" : "outline"}
               onClick={() => setActiveCategory(cat)}
-              className="rounded-full text-sm"
+              className="text-sm"
             >
               {cat}
             </Button>
