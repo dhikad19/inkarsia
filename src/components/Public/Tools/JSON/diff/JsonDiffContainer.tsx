@@ -77,7 +77,7 @@ export function JsonDiffContainer() {
 
   return (
     <div className="grid gap-6">
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-[1fr_1fr_380px] gap-4">
         <JsonEditor
           value={left}
           onChange={setLeft}
@@ -90,26 +90,28 @@ export function JsonDiffContainer() {
           onMount={(editor) => (rightEditorRef.current = editor)}
         />
 
-        <DiffResult
-          diffs={diffs}
-          onSelectDiff={(diff) => {
-            if (leftEditorRef.current) {
-              highlightSingleDiffByPath(
-                leftEditorRef.current,
-                diff.path,
-                leftActiveDecorations,
-              );
-            }
+        <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_360px] gap-4 items-start">
+          <DiffResult
+            diffs={diffs}
+            onSelectDiff={(diff) => {
+              if (leftEditorRef.current) {
+                highlightSingleDiffByPath(
+                  leftEditorRef.current,
+                  diff.path,
+                  leftActiveDecorations,
+                );
+              }
 
-            if (rightEditorRef.current) {
-              highlightSingleDiffByPath(
-                rightEditorRef.current,
-                diff.path,
-                rightActiveDecorations,
-              );
-            }
-          }}
-        />
+              if (rightEditorRef.current) {
+                highlightSingleDiffByPath(
+                  rightEditorRef.current,
+                  diff.path,
+                  rightActiveDecorations,
+                );
+              }
+            }}
+          />
+        </div>
       </div>
       <Button onClick={runDiff}>Perform diff</Button>
     </div>
