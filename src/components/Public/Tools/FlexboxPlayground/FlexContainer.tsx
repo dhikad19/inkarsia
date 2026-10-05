@@ -1,50 +1,61 @@
+"use client";
+
+import { Minus, Plus, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { MAX_ITEMS, MIN_ITEMS, type FlexProperties } from "./utils";
+
+type Props = {
+  count: number;
+  properties: FlexProperties;
+  onAdd: () => void;
+  onRemove: () => void;
+  onReset: () => void;
+};
 
 export default function FlexContainer({
-  items,
+  count,
   properties,
   onAdd,
   onRemove,
   onReset,
-}: any) {
+}: Props) {
   return (
-    <div>
-      <div className="flex justify-between mb-3">
-        <div className="font-medium">Flex Container</div>
-        <div className="space-x-2">
-          <Button size="sm" onClick={onAdd}>
-            Add Item
+    <Card className="h-full">
+      <CardHeader className="flex flex-row flex-wrap items-center justify-between gap-2">
+        <CardTitle>Flex Container</CardTitle>
+        <div className="flex gap-2">
+          <Button size="sm" onClick={onAdd} disabled={count >= MAX_ITEMS}>
+            <Plus />
+            Add
           </Button>
-          <Button size="sm" variant="outline" onClick={onRemove}>
-            Remove Item
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={onRemove}
+            disabled={count <= MIN_ITEMS}>
+            <Minus />
+            Remove
           </Button>
-          <Button size="sm" variant="destructive" onClick={onReset}>
+          <Button size="sm" variant="ghost" onClick={onReset}>
+            <RotateCcw />
             Reset
           </Button>
         </div>
-      </div>
-
-      <div
-        className="border border-dashed border-neutral-600 p-4 min-h-[120px] rounded-lg transition-all"
-        style={{
-          display: "flex",
-          flexDirection: properties.flexDirection,
-          flexWrap: properties.flexWrap,
-          justifyContent: properties.justifyContent,
-          alignItems: properties.alignItems,
-          alignContent: properties.alignContent,
-          gap: properties.gap,
-        }}
-      >
-        {items.map((num) => (
-          <div
-            key={num}
-            className="bg-white text-black font-semibold rounded-lg w-12 h-20 flex items-center justify-center"
-          >
-            {num}
-          </div>
-        ))}
-      </div>
-    </div>
+      </CardHeader>
+      <CardContent>
+        <div
+          className="min-h-[240px] rounded-lg border border-dashed bg-muted/30 p-4"
+          style={{ display: "flex", ...properties }}>
+          {Array.from({ length: count }, (_, i) => (
+            <div
+              key={i}
+              className="flex min-h-16 min-w-16 items-center justify-center rounded-lg bg-primary px-3 py-2 font-semibold text-primary-foreground">
+              {i + 1}
+            </div>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
   );
 }

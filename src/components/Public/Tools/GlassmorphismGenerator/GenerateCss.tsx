@@ -1,27 +1,18 @@
-export default function GeneratedCSS({ config }: any) {
-  const css = `
-.backdrop-box {
-  backdrop-filter: blur(${config.blur}px) brightness(${
-    config.brightness
-  }%) contrast(${config.contrast}%) saturate(${config.saturation}%);
-  background: ${config.backgroundColor}${Math.round(
-    config.backgroundOpacity * 255
-  ).toString(16)};
-  border: 1px solid ${config.borderColor}${Math.round(
-    config.borderOpacity * 255
-  ).toString(16)};
-  border-radius: ${config.borderRadius}px;
-}
-  `.trim();
+"use client";
 
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import CodeBlock from "@/components/Public/Tools/CodeBlock";
+import { buildCss, type GlassConfig } from "./utils";
+
+export default function GeneratedCSS({ config }: { config: GlassConfig }) {
   return (
-    <div className="p-5 border rounded-xl">
-      <h2 className="text-xl font-semibold mb-3">Generated CSS</h2>
-      <textarea
-        className="w-full h-40 p-3 rounded bg-black/20 text-white"
-        readOnly
-        value={css}
-      />
-    </div>
+    <Card>
+      <CardHeader>
+        <CardTitle>Generated CSS</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <CodeBlock label="CSS" code={buildCss(config)} />
+      </CardContent>
+    </Card>
   );
 }

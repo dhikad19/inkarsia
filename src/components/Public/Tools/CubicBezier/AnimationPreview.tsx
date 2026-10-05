@@ -1,83 +1,78 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Slider } from "@/components/ui/slider";
 import { useState } from "react";
+import { Pause, Play, RotateCcw } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Slider } from "@/components/ui/slider";
+import AnimatedBall from "./AnimatedBall";
+
+type Props = {
+  bezier: string;
+  duration: number;
+  setDuration: (v: number) => void;
+};
 
 export default function AnimationPreview({
   bezier,
   duration,
   setDuration,
-}: {
-  bezier: string;
-  duration: number;
-  setDuration: (v: number) => void;
-}) {
-  const [playing, setPlaying] = useState(false);
+}: Props) {
+  const [playing, setPlaying] = useState(true);
+  const [runId, setRunId] = useState(0);
 
-  const play = () => setPlaying(true);
-  const pause = () => setPlaying(false);
   const reset = () => {
-    setPlaying(false);
-    // trigger reflow supaya animasi reset
-    void document.body.offsetHeight;
+    setRunId((n) => n + 1);
     setPlaying(true);
   };
 
   return (
-    <div className="border p-4 rounded-lg">
-      <h3 className="font-semibold mb-2">Animation Preview</h3>
+    <Card>
+      <CardHeader>
+        <CardTitle>Animation Preview</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-5">
+        <div className="flex gap-2">
+          <Button size="sm" onClick={() => setPlaying((p) => !p)}>
+            {playing ? <Pause /> : <Play />}
+            {playing ? "Pause" : "Play"}
+          </Button>
+          <Button size="sm" variant="outline" onClick={reset}>
+            <RotateCcw />
+            Reset
+          </Button>
+        </div>
 
-      {/* Controls */}
-      <div className="flex gap-2 mb-3">
-        <Button onClick={play}>Play</Button>
-        <Button onClick={pause} variant="outline">
-          Pause
-        </Button>
-        <Button onClick={reset} variant="secondary">
-          Reset
-        </Button>
-      </div>
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <Label htmlFor="duration">Duration</Label>
+            <span className="text-sm tabular-nums text-muted-foreground">
+              {duration.toFixed(1)}s
+            </span>
+          </div>
+          <Slider
+            id="duration"
+            value={[duration]}
+            min={0.5}
+            max={5}
+            step={0.1}
+            onValueChange={([v]) => setDuration(v)}
+          />
+        </div>
 
-      {/* Slider duration */}
-      <div className="flex items-center gap-2 mb-4">
-        <span className="text-sm">Duration:</span>
-        <Slider
-          value={[duration]}
-          min={0.5}
-          max={5}
-          step={0.1}
-          onValueChange={(v) => setDuration(v[0])}
-          className="flex-1"
-        />
-        <span className="w-10 text-sm">{duration}s</span>
-      </div>
-
-      {/* Animation area */}
-      <div className="h-16 relative mt-4 overflow-hidden w-full bg-black/10 rounded">
-        <div
-          className="w-8 h-8 rounded-full bg-primary absolute left-0 top-1/2 -translate-y-1/2"
-          style={{
-            animationName: "moveX",
-            animationDuration: `${duration}s`,
-            animationTimingFunction: bezier,
-            animationIterationCount: "infinite",
-            animationDirection: "alternate",
-            animationPlayState: playing ? "running" : "paused",
-          }}
-        />
-      </div>
-
-      <style jsx>{`
-        @keyframes moveX {
-          from {
-            transform: translateX(0);
-          }
-          to {
-            transform: translateX(100%);
-          }
-        }
-      `}</style>
-    </div>
+        <div className="relative h-16 overflow-hidden rounded-lg bg-muted">
+          <div className="relative mx-2 h-full">
+            <AnimatedBall
+              easing={bezier}
+              duration={duration}
+              playing={playing}
+              runId={runId}
+              className="size-8"
+            />
+          </div>
+        </div>
+      </CardContent>
+    </Card>
   );
 }

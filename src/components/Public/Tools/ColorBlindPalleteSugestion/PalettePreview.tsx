@@ -1,7 +1,38 @@
 "use client";
 
 import { useMemo } from "react";
-import { contrastRatio } from "@/lib/utils";
+import { Check, TriangleAlert } from "lucide-react";
+import CodeBlock from "@/components/Public/Tools/CodeBlock";
+import {
+  SIMS,
+  SIMILAR_BELOW,
+  Sim,
+  findSimilarPairs,
+  simulate,
+  toCssVars,
+} from "./utils";
+
+const BAR_WIDTHS = [92, 78, 66, 54, 44, 34, 26, 18];
+
+function Strip({ title, colors }: { title: string; colors: string[] }) {
+  return (
+    <div className="space-y-2">
+      <div className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+        {title}
+      </div>
+      <div className="grid grid-cols-4 gap-2 sm:grid-cols-8">
+        {colors.map((c, i) => (
+          <div key={i} className="min-w-0 space-y-1">
+            <div className="h-14 rounded-lg border" style={{ background: c }} />
+            <div className="truncate text-center font-mono text-[10px] text-muted-foreground">
+              {c}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default function PalettePreview({
   palette,
@@ -10,97 +41,84 @@ export default function PalettePreview({
 }: {
   palette: string[];
   name: string;
-  sim: string;
+  sim: Sim;
 }) {
-  const items = useMemo(
-    () =>
-      palette.map((c, i) => ({ hex: c, idx: i, contrast: contrastRatio(c) })),
-    [palette]
+  const simulated = useMemo(
+    () => palette.map((c) => simulate(c, sim)),
+    [palette, sim],
   );
-
-  const filterClass = sim === "normal" ? "" : `palette-sim--${sim}`;
+  const pairs = useMemo(() => findSimilarPairs(palette, sim), [palette, sim]);
+  const simLabel = SIMS.find((s) => s.value === sim)?.label;
 
   return (
-    <div>
-      <div className="bg-white rounded-lg shadow p-4">
-        <div className="flex justify-between items-start">
-          <div>
-            <h2 className="text-xl font-semibold">{name}</h2>
-            <p className="text-sm text-slate-500">
-              Preview palet dan pemeriksaan kontras.
-            </p>
-          </div>
-          <div className="text-sm text-slate-600">{items.length} warna</div>
-        </div>
+    <div className="space-y-6">
+      <Strip title="Original" colors={palette} />
+      {sim !== "normal" && (
+        <Strip title={`As seen with ${simLabel}`} colors={simulated} />
+      )}
 
-        <div
-          className={`mt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-${Math.min(
-            6,
-            Math.max(3, items.length)
-          )} gap-3 ${filterClass}`}
-        >
-          {items.map((it) => (
-            <div key={it.idx} className="rounded overflow-hidden shadow">
-              <div className="palette-swatch" style={{ background: it.hex }}>
-                <div className="text-sm">{it.hex.toUpperCase()}</div>
-              </div>
-              <div className="p-2 bg-white flex justify-between items-center">
-                <div className="text-xs">
-                  Contrast: {it.contrast.toFixed(2)}
-                </div>
-                <div>
-                  <button className="text-xs px-2 py-1 border rounded mr-2">
-                    Copy
-                  </button>
-                  <button className="text-xs px-2 py-1 border rounded">
-                    Export
-                  </button>
-                </div>
-              </div>
+      <div className="space-y-3">
+        <div className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+          Sample chart
+        </div>
+        <div className="space-y-2 rounded-xl border bg-muted/40 p-4">
+          {simulated.map((c, i) => (
+            <div key={i} className="flex items-center gap-3">
+              <span className="w-4 text-xs tabular-nums text-muted-foreground">
+                {i + 1}
+              </span>
+              <div
+                className="h-5 rounded"
+                style={{ width: `${BAR_WIDTHS[i] ?? 20}%`, background: c }}
+              />
             </div>
           ))}
         </div>
       </div>
 
-      <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-white p-4 rounded shadow">
-          <h3 className="font-semibold">Preview pada UI</h3>
-          <div
-            className="mt-3 p-4 rounded"
-            style={{ background: palette[0] || "#f3f4f6" }}
-          >
-            <h4 className="text-white font-bold">Judul aplikasi</h4>
-            <p className="text-sm text-white/90">
-              Contoh teks di atas latar utama.
-            </p>
-            <div className="mt-3">
-              <button
-                className="px-3 py-2 rounded"
-                style={{ background: palette[1] || "#111827", color: "#fff" }}
-              >
-                Primary
-              </button>
-            </div>
+      <div className="space-y-2">
+        {pairs.length === 0 ? (
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <Check className="h-4 w-4" />
+            All colors are easy to tell apart
+            {sim !== "normal" ? " in this simulation" : ""}.
           </div>
-        </div>
-
-        <div className="bg-white p-4 rounded shadow">
-          <h3 className="font-semibold">Simulator sederhana</h3>
-          <p className="text-sm text-slate-600">
-            Gunakan simulator buta warna untuk cek perbedaan visual.
-          </p>
-        </div>
-
-        <div className="bg-white p-4 rounded shadow">
-          <h3 className="font-semibold">Sponsorship / Tools</h3>
-          <p className="text-sm">
-            Tautan afiliasi:{" "}
-            <a className="text-sky-600" href="#">
-              ColorAnalyzer Pro
-            </a>
-          </p>
-        </div>
+        ) : (
+          <>
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <TriangleAlert className="h-4 w-4" />
+              {pairs.length} pair{pairs.length > 1 ? "s" : ""} hard to tell
+              apart (ΔE below {SIMILAR_BELOW})
+            </div>
+            <ul className="space-y-1.5">
+              {pairs.map(({ i, j, de }) => (
+                <li
+                  key={`${i}-${j}`}
+                  className="flex items-center gap-3 rounded-lg border bg-muted/40 px-3 py-2 text-sm">
+                  <span className="flex -space-x-1">
+                    <span
+                      className="h-5 w-5 rounded-full border-2 border-background"
+                      style={{ background: simulated[i] }}
+                    />
+                    <span
+                      className="h-5 w-5 rounded-full border-2 border-background"
+                      style={{ background: simulated[j] }}
+                    />
+                  </span>
+                  <span>
+                    Color {i + 1} and {j + 1}
+                  </span>
+                  <span className="ml-auto text-xs tabular-nums text-muted-foreground">
+                    ΔE {de.toFixed(1)}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
       </div>
+
+      <CodeBlock label="CSS variables" code={toCssVars(name, palette)} />
     </div>
   );
 }

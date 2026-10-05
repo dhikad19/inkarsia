@@ -1,124 +1,207 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { contrastRatio, getRatingScore, getTextScore } from "@/utils/contrast";
+import { useEffect, useMemo, useState } from "react";
+import { ArrowLeftRight, Check, Wand2, X } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import ColorPreview from "./ColorPreview";
+import {
+  CHECKS,
+  contrastRatio,
+  formatRatio,
+  getLevel,
+  normalizeHex,
+  suggestText,
+} from "./utils";
 
-export default function ColorContrastChecker() {
-  const [textColor, setTextColor] = useState("#FFFFFF");
-  const [bgColor, setBgColor] = useState("#214469");
-  const [contrast, setContrast] = useState<string | null>(null);
+function ColorField({
+  label,
+  value,
+  onChange,
+}: {
+  label: string;
+  value: string;
+  onChange: (hex: string) => void;
+}) {
+  const [draft, setDraft] = useState(value);
+  const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
-    // hitung kontras pertama kali dan tiap kali warna berubah
-    const ratio = contrastRatio(textColor, bgColor);
-    setContrast(ratio);
-  }, [textColor, bgColor]);
-
-  // jangan render sebelum contrast terhitung
-  if (contrast === null) {
-    return (
-      <div className="flex justify-center items-center h-64">
-        <p className="text-gray-500">Loading contrast...</p>
-      </div>
-    );
-  }
-
-  const contrastValue = parseFloat(contrast);
-  const score = getRatingScore(contrastValue);
-  const smallTextScore = getTextScore(contrastValue, 4.5);
-  const largeTextScore = getTextScore(contrastValue, 3.0);
-
-  const level =
-    contrastValue >= 7
-      ? "Excellent"
-      : contrastValue >= 4.5
-      ? "Good"
-      : contrastValue >= 3
-      ? "Fair"
-      : "Poor";
-
-  const ratingColor =
-    contrastValue >= 7
-      ? "bg-green-100 text-green-800"
-      : contrastValue >= 4.5
-      ? "bg-yellow-100 text-yellow-800"
-      : contrastValue >= 3
-      ? "bg-orange-100 text-orange-800"
-      : "bg-red-100 text-red-800";
+  useEffect(() => setDraft(value), [value]);
+  useEffect(() => setMounted(true), []);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-      {/* Left Panel */}
-      <div className="p-6 border rounded-2xl bg-white shadow-sm">
-        <h2 className="text-lg font-semibold mb-4">Pick your colors</h2>
+    <div className="min-w-0 space-y-2">
+      <Label>{label}</Label>
+      <div className="flex items-center gap-2">
+        {mounted ? (
+          <input
+            type="color"
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+            aria-label={`${label} picker`}
+            className="h-10 w-11 shrink-0 cursor-pointer rounded-md border bg-transparent p-1"
+          />
+        ) : (
+          <div className="h-10 w-11 shrink-0 rounded-md border" />
+        )}
+        <Input
+          value={draft}
+          maxLength={7}
+          spellCheck={false}
+          className="h-10 min-w-0 font-mono text-sm"
+          onChange={(e) => {
+            setDraft(e.target.value);
+            if (/^#?[0-9a-f]{6}$/i.test(e.target.value)) {
+              onChange(normalizeHex(e.target.value)!);
+            }
+          }}
+          onBlur={() => {
+            const hex = normalizeHex(draft);
+            if (hex) {
+              onChange(hex);
+              setDraft(hex);
+            } else {
+              setDraft(value);
+            }
+          }}
+        />
+      </div>
+    </div>
+  );
+}
 
-        <div className="flex justify-between items-center mb-6 gap-4">
-          <div className="flex flex-col w-1/2">
-            <label className="text-sm font-medium mb-1">Text color</label>
-            <input
-              type="color"
-              value={textColor}
-              onChange={(e) => setTextColor(e.target.value)}
-              className="w-full h-10 rounded-md cursor-pointer border border-gray-300"
-            />
-            <Input
-              value={textColor}
-              onChange={(e) => setTextColor(e.target.value)}
-              className="mt-2 text-center"
-            />
-          </div>
+export default function ColorContrastChecker() {
+  const [textColor, setTextColor] = useState("#ffffff");
+  const [bgColor, setBgColor] = useState("#214469");
 
-          <div className="flex flex-col w-1/2">
-            <label className="text-sm font-medium mb-1">Background color</label>
-            <input
-              type="color"
-              value={bgColor}
-              onChange={(e) => setBgColor(e.target.value)}
-              className="w-full h-10 rounded-md cursor-pointer border border-gray-300"
-            />
-            <Input
-              value={bgColor}
-              onChange={(e) => setBgColor(e.target.value)}
-              className="mt-2 text-center"
-            />
-          </div>
-        </div>
+  const ratio = useMemo(
+    () => contrastRatio(textColor, bgColor),
+    [textColor, bgColor],
+  );
+  const passesAA = ratio >= 4.5;
+  const suggestion = useMemo(
+    () => (passesAA ? null : suggestText(textColor, bgColor)),
+    [passesAA, textColor, bgColor],
+  );
 
-        <div className={`rounded-xl p-4 text-center ${ratingColor}`}>
-          <p className="text-4xl font-bold">{contrast}</p>
-          <p className="font-semibold">{level}</p>
-          <p className="text-lg mt-1">Score: {score}/100</p>
-        </div>
+  return (
+    <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-2">
+      <div className="min-w-0 space-y-6">
+        <Card className="rounded-2xl">
+          <CardHeader className="flex-row items-center justify-between space-y-0">
+            <CardTitle className="text-lg">Colors</CardTitle>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-8 gap-1.5"
+              onClick={() => {
+                setTextColor(bgColor);
+                setBgColor(textColor);
+              }}>
+              <ArrowLeftRight className="h-3.5 w-3.5" />
+              Swap
+            </Button>
+          </CardHeader>
+          <CardContent>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <ColorField
+                label="Text"
+                value={textColor}
+                onChange={setTextColor}
+              />
+              <ColorField
+                label="Background"
+                value={bgColor}
+                onChange={setBgColor}
+              />
+            </div>
+          </CardContent>
+        </Card>
 
-        <div className="grid grid-cols-2 text-center mt-4 border rounded-xl divide-x">
-          <div className="p-3">
-            <p className="text-sm font-medium mb-1">Small text</p>
-            <p className="text-2xl font-semibold text-gray-800">
-              {smallTextScore}/5
-            </p>
-            <p className="text-xs text-gray-500">Threshold 4.5:1</p>
-          </div>
+        <Card className="rounded-2xl">
+          <CardHeader>
+            <CardTitle className="text-lg">Result</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-5">
+            <div className="rounded-xl border bg-muted/40 p-5 text-center">
+              <div className="text-5xl font-bold tabular-nums">
+                {formatRatio(ratio)}
+                <span className="text-2xl text-muted-foreground"> : 1</span>
+              </div>
+              <div className="mt-1 text-sm font-medium text-muted-foreground">
+                {getLevel(ratio)}
+              </div>
+            </div>
 
-          <div className="p-3">
-            <p className="text-sm font-medium mb-1">Large text</p>
-            <p className="text-2xl font-semibold text-gray-800">
-              {largeTextScore}/5
-            </p>
-            <p className="text-xs text-gray-500">Threshold 3.0:1</p>
-          </div>
-        </div>
+            <ul className="divide-y rounded-xl border">
+              {CHECKS.map((c) => {
+                const pass = ratio >= c.min;
+                return (
+                  <li
+                    key={`${c.level}-${c.label}`}
+                    className="flex items-center gap-3 px-4 py-2.5 text-sm">
+                    <span className="w-10 shrink-0 text-xs font-semibold text-muted-foreground">
+                      {c.level}
+                    </span>
+                    <span className="flex-1">{c.label}</span>
+                    <span className="text-xs tabular-nums text-muted-foreground">
+                      {c.min}:1
+                    </span>
+                    <span
+                      className={
+                        pass
+                          ? "flex items-center gap-1 text-sm font-medium"
+                          : "flex items-center gap-1 text-sm text-muted-foreground"
+                      }>
+                      {pass ? (
+                        <Check className="h-4 w-4" />
+                      ) : (
+                        <X className="h-4 w-4" />
+                      )}
+                      {pass ? "Pass" : "Fail"}
+                    </span>
+                  </li>
+                );
+              })}
+            </ul>
 
-        <p className="text-xs text-gray-500 mt-3">
-          WCAG 2.1 recommends 4.5+ for small text and 3.0+ for large text.
-        </p>
+            {!passesAA && (
+              <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border bg-muted/40 p-3">
+                <p className="text-sm text-muted-foreground">
+                  {suggestion
+                    ? "Text color doesn't pass AA. A close match that does:"
+                    : "No text color can pass AA on this background. Change the background."}
+                </p>
+                {suggestion && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="gap-2"
+                    onClick={() => setTextColor(suggestion)}>
+                    <span
+                      className="h-4 w-4 rounded border"
+                      style={{ background: suggestion }}
+                    />
+                    <span className="font-mono text-xs">{suggestion}</span>
+                    <Wand2 className="h-3.5 w-3.5" />
+                  </Button>
+                )}
+              </div>
+            )}
+          </CardContent>
+        </Card>
       </div>
 
-      {/* Right Panel */}
-      <div className="rounded-2xl overflow-hidden shadow-md min-h-[300px]">
-        <ColorPreview textColor={textColor} bgColor={bgColor} />
-      </div>
+      <Card className="min-w-0 rounded-2xl lg:sticky lg:top-24">
+        <CardHeader>
+          <CardTitle className="text-lg">Preview</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ColorPreview textColor={textColor} bgColor={bgColor} />
+        </CardContent>
+      </Card>
     </div>
   );
 }

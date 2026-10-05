@@ -1,30 +1,41 @@
 "use client";
 
+import { cn } from "@/lib/utils";
+import { SIMS, Sim } from "./utils";
+
 export default function SimulatorControls({
   sim,
   setSim,
 }: {
-  sim: string;
-  setSim: (s: any) => void;
+  sim: Sim;
+  setSim: (s: Sim) => void;
 }) {
   return (
-    <div className="flex gap-2 mt-2">
-      <select
-        value={sim}
-        onChange={(e) => setSim(e.target.value)}
-        className="p-2 border rounded"
-      >
-        <option value="normal">Normal</option>
-        <option value="protanopia">Protanopia (red-weak)</option>
-        <option value="deuteranopia">Deuteranopia (green-weak)</option>
-        <option value="tritanopia">Tritanopia (blue-weak)</option>
-      </select>
-      <button
-        onClick={() => setSim("normal")}
-        className="px-3 py-2 border rounded"
-      >
-        Reset
-      </button>
+    <div className="grid grid-cols-2 gap-2">
+      {SIMS.map((s) => {
+        const isActive = sim === s.value;
+        return (
+          <button
+            key={s.value}
+            type="button"
+            onClick={() => setSim(s.value)}
+            className={cn(
+              "flex flex-col items-start rounded-xl border px-3 py-2.5 text-left transition-colors",
+              isActive
+                ? "border-black bg-black text-white dark:border-white dark:bg-white dark:text-black"
+                : "hover:bg-muted",
+            )}>
+            <span className="text-sm font-medium">{s.label}</span>
+            <span
+              className={cn(
+                "text-xs",
+                isActive ? "opacity-70" : "text-muted-foreground",
+              )}>
+              {s.hint}
+            </span>
+          </button>
+        );
+      })}
     </div>
   );
 }

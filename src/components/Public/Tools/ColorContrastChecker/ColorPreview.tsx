@@ -1,77 +1,73 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Expand, X } from "lucide-react";
 
-interface PreviewProps {
-  textColor: string;
-  bgColor: string;
+type Props = { textColor: string; bgColor: string };
+
+function Sample({ large }: { large?: boolean }) {
+  return (
+    <div className="max-w-xl space-y-3 text-center">
+      <h2
+        className={large ? "text-4xl font-semibold" : "text-xl font-semibold"}>
+        Quote n. 16
+      </h2>
+      <p className={large ? "text-xl" : "text-sm"}>
+        Even if you’re on the right track, you’ll get run over if you just sit
+        there.
+      </p>
+      <p className={large ? "text-lg font-bold" : "text-sm font-bold"}>
+        Will Rogers
+      </p>
+    </div>
+  );
 }
 
-export default function ColorPreview({ textColor, bgColor }: PreviewProps) {
+export default function ColorPreview({ textColor, bgColor }: Props) {
   const [fullscreen, setFullscreen] = useState(false);
+
+  useEffect(() => {
+    if (!fullscreen) return;
+    const onKey = (e: KeyboardEvent) =>
+      e.key === "Escape" && setFullscreen(false);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKey);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prev;
+    };
+  }, [fullscreen]);
 
   return (
     <>
-      {/* Preview Box */}
       <div
-        className="relative flex flex-col items-center justify-center rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-lg cursor-pointer"
-        style={{ backgroundColor: bgColor, color: textColor }}
-        onClick={() => setFullscreen(true)}
-      >
+        className="relative flex min-h-72 items-center justify-center rounded-xl border p-8 transition-colors"
+        style={{ backgroundColor: bgColor, color: textColor }}>
         <button
-          className="absolute top-3 right-3 p-2 bg-white/10 hover:bg-white/20 rounded-lg"
-          title="Expand"
-        >
-          <Expand className="w-4 h-4 text-white" />
+          type="button"
+          onClick={() => setFullscreen(true)}
+          aria-label="Expand preview"
+          className="absolute right-3 top-3 rounded-lg border border-current/30 p-2 opacity-70 transition-opacity hover:opacity-100">
+          <Expand className="h-4 w-4" />
         </button>
-
-        <div className="text-center p-8">
-          <h2 className="text-xl font-semibold mb-2">Quote n. 16</h2>
-          <p className="text-sm mb-4">
-            Even if you’re on the right track, you’ll get run over if you just
-            sit there.
-          </p>
-          <p className="font-bold text-sm">Will Rogers</p>
-        </div>
+        <Sample />
       </div>
 
-      <AnimatePresence>
-        {fullscreen && (
-          <motion.div
-            className="fixed inset-0 z-[999] flex items-center justify-center bg-black/70 backdrop-blur-sm"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <motion.div
-              className="relative w-[100vw] h-[100vh] rounded-2xl overflow-hidden flex flex-col items-center justify-center shadow-2xl"
-              style={{ backgroundColor: bgColor, color: textColor }}
-              initial={{ scale: 0.9 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0.9 }}
-              transition={{ type: "spring", damping: 20 }}
-            >
-              <button
-                onClick={() => setFullscreen(false)}
-                className="absolute top-4 right-4 p-2 bg-black/30 hover:bg-black/50 rounded-lg"
-                title="Close"
-              >
-                <X className="w-5 h-5 text-white" />
-              </button>
-              <div className="text-center p-10">
-                <h2 className="text-3xl font-semibold mb-4">Quote n. 16</h2>
-                <p className="text-lg mb-6 max-w-lg">
-                  Even if you’re on the right track, you’ll get run over if you
-                  just sit there.
-                </p>
-                <p className="font-bold text-lg">Will Rogers</p>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {fullscreen && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center p-8"
+          style={{ backgroundColor: bgColor, color: textColor }}>
+          <button
+            type="button"
+            onClick={() => setFullscreen(false)}
+            aria-label="Close preview"
+            className="absolute right-4 top-4 rounded-lg border border-current/30 p-2 opacity-70 transition-opacity hover:opacity-100">
+            <X className="h-5 w-5" />
+          </button>
+          <Sample large />
+        </div>
+      )}
     </>
   );
 }

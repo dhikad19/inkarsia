@@ -1,15 +1,12 @@
+import ToolLayout from "@/components/Public/Tools/ToolLayout";
 import ColorContrastChecker from "@/components/Public/Tools/ColorContrastChecker/ColorContrast";
 
-export default function Home() {
+export default function Page() {
   return (
-    <main className="max-w-5xl mx-auto py-12 px-4">
-      <h1 className="text-4xl font-bold text-center mb-4">
-        Color Contrast Checker
-      </h1>
-      <p className="text-center text-gray-500 mb-10">
-        Calculate the contrast ratio of text and background colors.
-      </p>
+    <ToolLayout
+      title="Color Contrast Checker"
+      description="Calculate the contrast ratio between text and background colors and check it against WCAG 2.1.">
       <ColorContrastChecker />
-    </main>
+    </ToolLayout>
   );
 }

@@ -1,49 +1,32 @@
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import SliderControl from "./SliderControl";
+import { BACKDROP_SLIDERS, type GlassConfig } from "./utils";
 
-export default function BackdropControls({ config, setConfig }: any) {
+type Props = {
+  config: GlassConfig;
+  onChange: <K extends keyof GlassConfig>(
+    key: K,
+    value: GlassConfig[K],
+  ) => void;
+};
+
+export default function BackdropControls({ config, onChange }: Props) {
   return (
-    <div className="p-5 border rounded-xl space-y-5">
-      <h2 className="text-xl font-semibold">Backdrop Filter Controls</h2>
-
-      <SliderControl
-        label="Blur"
-        value={config.blur}
-        min={0}
-        max={40}
-        step={1}
-        onChange={(v: number) => setConfig((c: any) => ({ ...c, blur: v }))}
-      />
-
-      <SliderControl
-        label="Brightness"
-        value={config.brightness}
-        min={50}
-        max={200}
-        step={1}
-        onChange={(v: number) =>
-          setConfig((c: any) => ({ ...c, brightness: v }))
-        }
-      />
-
-      <SliderControl
-        label="Contrast"
-        value={config.contrast}
-        min={50}
-        max={200}
-        step={1}
-        onChange={(v: number) => setConfig((c: any) => ({ ...c, contrast: v }))}
-      />
-
-      <SliderControl
-        label="Saturation"
-        value={config.saturation}
-        min={0}
-        max={300}
-        step={1}
-        onChange={(v: number) =>
-          setConfig((c: any) => ({ ...c, saturation: v }))
-        }
-      />
-    </div>
+    <Card>
+      <CardHeader>
+        <CardTitle>Backdrop Filter</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-5">
+        {BACKDROP_SLIDERS.map(({ key, ...field }) => (
+          <SliderControl
+            key={key}
+            id={key}
+            {...field}
+            value={config[key]}
+            onChange={(v) => onChange(key, v)}
+          />
+        ))}
+      </CardContent>
+    </Card>
   );
 }

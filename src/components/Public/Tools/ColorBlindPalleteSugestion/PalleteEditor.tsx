@@ -1,8 +1,48 @@
 "use client";
 
-import chroma from "chroma-js";
-import { useState } from "react";
-import { suggestionsFor } from "@/lib/utils";
+import { useEffect, useState } from "react";
+import { Plus, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { MAX_COLORS, normalizeHex } from "./utils";
+
+function HexInput({
+  value,
+  onChange,
+}: {
+  value: string;
+  onChange: (hex: string) => void;
+}) {
+  const [draft, setDraft] = useState(value);
+  useEffect(() => setDraft(value), [value]);
+
+  return (
+    <Input
+      value={draft}
+      maxLength={7}
+      spellCheck={false}
+      aria-label="Hex color"
+      className="h-10 font-mono text-sm"
+      onChange={(e) => {
+        setDraft(e.target.value);
+        // saat mengetik, hanya terima hex 6 digit yang lengkap
+        if (/^#?[0-9a-f]{6}$/i.test(e.target.value)) {
+          onChange(normalizeHex(e.target.value)!);
+        }
+      }}
+      onBlur={() => {
+        const hex = normalizeHex(draft);
+        if (hex) {
+          onChange(hex);
+          setDraft(hex);
+        } else {
+          setDraft(value);
+        }
+      }}
+    />
+  );
+}
 
 export default function PaletteEditor({
   palette,
@@ -16,92 +56,77 @@ export default function PaletteEditor({
   setName: (s: string) => void;
 }) {
   const [input, setInput] = useState("");
+  const newHex = normalizeHex(input);
+  const isFull = palette.length >= MAX_COLORS;
 
-  function addColor(hex: string) {
-    if (!/^#?[0-9A-Fa-f]{6}$/.test(hex)) return;
-    const h = hex.startsWith("#") ? hex : "#" + hex;
-    setPalette([...palette, h]);
-  }
-
-  function replace(index: number, hex: string) {
-    const copy = [...palette];
-    copy[index] = hex;
-    setPalette(copy);
-  }
-
-  function remove(index: number) {
-    const copy = palette.filter((_, i) => i !== index);
-    setPalette(copy);
-  }
-
-  function autoSuggest() {
-    const sug = suggestionsFor(palette);
-    setPalette(sug);
-  }
+  const add = () => {
+    if (!newHex || isFull) return;
+    setPalette([...palette, newHex]);
+    setInput("");
+  };
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow">
-      <label className="block text-sm font-medium mb-2">Nama palet</label>
-      <input
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        className="w-full p-2 border rounded mb-3"
-      />
-
-      <label className="block text-sm font-medium mb-2">Warna saat ini</label>
+    <div className="space-y-5">
       <div className="space-y-2">
-        {palette.map((c, i) => (
-          <div key={i} className="flex items-center gap-2">
-            <div
-              className="w-10 h-10 rounded shadow"
-              style={{ background: c }}
-            />
-            <input
-              value={c}
-              onChange={(e) => replace(i, e.target.value)}
-              className="flex-1 p-2 border rounded"
-            />
-            <button
-              onClick={() => remove(i)}
-              className="px-3 py-1 rounded bg-red-500 text-white"
-            >
-              hapus
-            </button>
-          </div>
-        ))}
+        <Label htmlFor="palette-name">Palette name</Label>
+        <Input
+          id="palette-name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
       </div>
 
-      <div className="mt-3 flex gap-2">
-        <input
+      <div className="space-y-2">
+        <Label>
+          Colors ({palette.length}/{MAX_COLORS})
+        </Label>
+        <div className="space-y-2">
+          {palette.map((c, i) => (
+            <div key={i} className="flex items-center gap-2">
+              <div
+                className="h-10 w-10 shrink-0 rounded-lg border"
+                style={{ background: c }}
+              />
+              <HexInput
+                value={c}
+                onChange={(hex) =>
+                  setPalette(palette.map((x, idx) => (idx === i ? hex : x)))
+                }
+              />
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-10 w-10 shrink-0"
+                aria-label={`Remove color ${i + 1}`}
+                disabled={palette.length <= 1}
+                onClick={() =>
+                  setPalette(palette.filter((_, idx) => idx !== i))
+                }>
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="flex gap-2">
+        <Input
           placeholder="#RRGGBB"
           value={input}
+          spellCheck={false}
+          disabled={isFull}
+          className="h-10 font-mono text-sm"
           onChange={(e) => setInput(e.target.value)}
-          className="p-2 border rounded flex-1"
+          onKeyDown={(e) => e.key === "Enter" && add()}
         />
-        <button
-          onClick={() => {
-            addColor(input);
-            setInput("");
-          }}
-          className="px-4 py-2 bg-sky-600 text-white rounded"
-        >
-          Tambah
-        </button>
-      </div>
-
-      <div className="mt-4 flex gap-2">
-        <button
-          onClick={autoSuggest}
-          className="px-3 py-2 bg-emerald-600 text-white rounded"
-        >
-          Saran palet ramah
-        </button>
-        <button
-          onClick={() => setPalette([])}
-          className="px-3 py-2 bg-gray-200 rounded"
-        >
-          Clear
-        </button>
+        <Button
+          variant="outline"
+          className="h-10 gap-1.5"
+          disabled={!newHex || isFull}
+          onClick={add}>
+          <Plus className="h-4 w-4" />
+          Add
+        </Button>
       </div>
     </div>
   );

@@ -1,44 +1,40 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  PRESETS,
+  matchesPreset,
+  type FlexProperties,
+  type Preset,
+} from "./utils";
 
-export default function PresetLayouts({ setProperties }: any) {
-  const presets = {
-    Center: {
-      justifyContent: "center",
-      alignItems: "center",
-    },
-    "Space Between": {
-      justifyContent: "space-between",
-    },
-    Column: {
-      flexDirection: "column",
-      alignItems: "center",
-    },
-    Wrap: {
-      flexWrap: "wrap",
-      justifyContent: "space-around",
-    },
-  };
+type Props = {
+  properties: FlexProperties;
+  onSelect: (preset: Preset) => void;
+};
 
+export default function PresetLayouts({ properties, onSelect }: Props) {
   return (
-    <div>
-      <div className="font-medium mb-2">Preset Layouts</div>
-      <div className="flex gap-2 flex-wrap">
-        {Object.keys(presets).map((name) => (
-          <Button
-            key={name}
-            variant="outline"
-            size="sm"
-            onClick={() =>
-              setProperties((prev: any) => ({
-                ...prev,
-                ...presets[name as keyof typeof presets],
-              }))
-            }
-          >
-            {name}
-          </Button>
-        ))}
-      </div>
-    </div>
+    <Card>
+      <CardHeader>
+        <CardTitle>Preset Layouts</CardTitle>
+      </CardHeader>
+      <CardContent className="flex flex-wrap gap-2">
+        {PRESETS.map((preset) => {
+          const active = matchesPreset(properties, preset);
+          return (
+            <Button
+              key={preset.name}
+              size="sm"
+              variant={active ? "default" : "outline"}
+              aria-pressed={active}
+              onClick={() => onSelect(preset)}>
+              {preset.name}
+            </Button>
+          );
+        })}
+      </CardContent>
+    </Card>
   );
 }

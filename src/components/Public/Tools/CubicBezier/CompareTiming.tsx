@@ -1,50 +1,40 @@
 "use client";
 
-import { Card } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
+import { getCompareList } from "./utils";
+import AnimatedBall from "./AnimatedBall";
 
-const compareList = {
-  Linear: "linear",
-  Ease: "ease",
-  "Ease In": "ease-in",
-  "Ease Out": "ease-out",
-  "Ease In-Out": "ease-in-out",
-};
+type Props = { bezier: string; duration: number };
 
-export default function CompareTiming({ bezier }: { bezier: string }) {
-  const extendedList = { ...compareList, Custom: bezier };
-
+export default function CompareTiming({ bezier, duration }: Props) {
   return (
-    <Card className="p-4">
-      <h3 className="font-semibold mb-3">Compare Timing Functions</h3>
-      <div className="space-y-3">
-        {Object.entries(extendedList).map(([name, func]) => (
+    <Card>
+      <CardHeader>
+        <CardTitle>Compare Timing Functions</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-3">
+        {getCompareList(bezier).map(({ name, easing }) => (
           <div key={name} className="flex items-center gap-3">
-            <span className="w-20 text-sm">{name}</span>
-            <div className="relative h-8 flex-1 overflow-hidden bg-black/5 rounded">
-              <div
-                className="absolute w-6 h-6 bg-primary rounded-full"
-                style={{
-                  animation: `moveX 2s ${func} infinite`,
-                  animationDirection: "alternate",
-                }}
-              />
+            <span
+              className={cn(
+                "w-24 shrink-0 text-sm text-muted-foreground",
+                name === "Custom" && "font-medium text-foreground",
+              )}>
+              {name}
+            </span>
+            <div className="relative h-8 flex-1 overflow-hidden rounded-md bg-muted">
+              <div className="relative mx-1 h-full">
+                <AnimatedBall
+                  easing={easing}
+                  duration={duration}
+                  className="size-6"
+                />
+              </div>
             </div>
           </div>
         ))}
-      </div>
-
-      <style jsx>{`
-        /* keyframes mengubah 'left' dari 0 → (100% - ball-size) */
-        @keyframes moveX {
-          from {
-            left: 0;
-          }
-          /* 1.5rem = w-6 / h-6 (Tailwind default). Ganti jika ukuran bola berubah. */
-          to {
-            left: calc(100% - 1.5rem);
-          }
-        }
-      `}</style>
+      </CardContent>
     </Card>
   );
 }

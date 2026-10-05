@@ -1,53 +1,64 @@
 "use client";
 
 import { useState } from "react";
-import { Card } from "@/components/ui/card";
+import ToolLayout from "@/components/Public/Tools/ToolLayout";
 import FlexContainer from "@/components/Public/Tools/FlexboxPlayground/FlexContainer";
 import ContainerProperties from "@/components/Public/Tools/FlexboxPlayground/ContainerProperties";
 import PresetLayouts from "@/components/Public/Tools/FlexboxPlayground/PresetLayouts";
 import GeneratedCSS from "@/components/Public/Tools/FlexboxPlayground/GenerateCss";
+import {
+  DEFAULT_ITEM_COUNT,
+  DEFAULT_PROPERTIES,
+  MAX_ITEMS,
+  MIN_ITEMS,
+  resolvePreset,
+  type FlexProperties,
+  type Preset,
+} from "@/components/Public/Tools/FlexboxPlayground/utils";
 
-export default function Page() {
-  const [items, setItems] = useState<number[]>([1, 2, 3, 4]);
-  const [properties, setProperties] = useState({
-    flexDirection: "row",
-    flexWrap: "nowrap",
-    justifyContent: "flex-start",
-    alignItems: "stretch",
-    alignContent: "normal",
-    gap: "10px",
-  });
+export default function FlexboxPlayground() {
+  const [properties, setProperties] =
+    useState<FlexProperties>(DEFAULT_PROPERTIES);
+  const [count, setCount] = useState(DEFAULT_ITEM_COUNT);
 
-  const addItem = () => setItems((prev) => [...prev, prev.length + 1]);
-  const removeItem = () => setItems((prev) => prev.slice(0, -1));
-  const reset = () => setItems([1, 2, 3, 4]);
+  const changeProperty = <K extends keyof FlexProperties>(
+    key: K,
+    value: FlexProperties[K],
+  ) => setProperties((prev) => ({ ...prev, [key]: value }));
+
+  const applyPreset = (preset: Preset) => {
+    setProperties(resolvePreset(preset));
+    setCount(preset.items ?? DEFAULT_ITEM_COUNT);
+  };
+
+  const reset = () => {
+    setProperties(DEFAULT_PROPERTIES);
+    setCount(DEFAULT_ITEM_COUNT);
+  };
 
   return (
-    <div className="min-h-screen bg-[#0b0b0b] text-white p-6 space-y-6">
-      <Card className="p-4 bg-[#111] border border-neutral-800 space-y-4">
-        <FlexContainer
-          items={items}
-          properties={properties}
-          onAdd={addItem}
-          onRemove={removeItem}
-          onReset={reset}
-        />
-      </Card>
+    <ToolLayout
+      title="Flexbox Playground"
+      description="Experiment with flex container properties and copy the generated CSS.">
+      <PresetLayouts properties={properties} onSelect={applyPreset} />
 
-      <Card className="p-4 bg-[#111] border border-neutral-800">
+      <div className="grid gap-6 lg:grid-cols-3">
+        <div className="lg:col-span-2">
+          <FlexContainer
+            count={count}
+            properties={properties}
+            onAdd={() => setCount((c) => Math.min(MAX_ITEMS, c + 1))}
+            onRemove={() => setCount((c) => Math.max(MIN_ITEMS, c - 1))}
+            onReset={reset}
+          />
+        </div>
         <ContainerProperties
           properties={properties}
-          setProperties={setProperties}
+          onChange={changeProperty}
         />
-      </Card>
+      </div>
 
-      <Card className="p-4 bg-[#111] border border-neutral-800">
-        <PresetLayouts setProperties={setProperties} />
-      </Card>
-
-      <Card className="p-4 bg-[#111] border border-neutral-800">
-        <GeneratedCSS properties={properties} />
-      </Card>
-    </div>
+      <GeneratedCSS properties={properties} />
+    </ToolLayout>
   );
 }

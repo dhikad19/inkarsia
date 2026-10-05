@@ -102,14 +102,14 @@ const tools: Tool[] = [
     category: "Animation",
     icon: Activity,
   },
-  {
-    name: "Feature Detection Tool",
-    slug: "feature-detection",
-    description:
-      "Quickly check browser support for modern web APIs, CSS features, and JavaScript methods.",
-    category: "Utility",
-    icon: Gauge,
-  },
+  // {
+  //   name: "Feature Detection Tool",
+  //   slug: "feature-detection",
+  //   description:
+  //     "Quickly check browser support for modern web APIs, CSS features, and JavaScript methods.",
+  //   category: "Utility",
+  //   icon: Gauge,
+  // },
   {
     name: "Flexbox Playground",
     slug: "flexbox-playground",
@@ -240,8 +240,7 @@ export default function ToolsList() {
                   isActive
                     ? "bg-black text-white border-black dark:bg-white dark:text-black dark:border-white"
                     : "bg-background text-muted-foreground hover:text-foreground hover:bg-muted",
-                )}
-              >
+                )}>
                 {cat}
                 <span
                   className={cn(
@@ -249,8 +248,7 @@ export default function ToolsList() {
                     isActive
                       ? "bg-white/20 text-white dark:bg-black/10 dark:text-black"
                       : "bg-muted",
-                  )}
-                >
+                  )}>
                   {counts[cat]}
                 </span>
               </button>
@@ -268,8 +266,7 @@ export default function ToolsList() {
               <Link
                 key={tool.slug}
                 href={`/tools/${tool.slug}`}
-                className="group block rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-              >
+                className="group block rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
                 <Card className="h-full rounded-2xl transition-all duration-200 group-hover:-translate-y-1 group-hover:shadow-lg group-hover:border-primary/40">
                   <CardContent className="p-5 flex h-full flex-col gap-4">
                     <div className="flex items-start justify-between">

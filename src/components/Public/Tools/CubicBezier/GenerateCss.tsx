@@ -1,44 +1,20 @@
 "use client";
 
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import CodeBlock from "@/components/Public/Tools/CodeBlock";
+import { buildCss } from "./utils";
 
-export default function GeneratedCSS({ bezier, duration }: any) {
-  const css = `
-/* CSS Timing Function */
-animation-timing-function: ${bezier};
-transition-timing-function: ${bezier};
+type Props = { bezier: string; duration: number };
 
-/* Example usage */
-.element {
-  transition: transform ${duration}s ${bezier};
-}
-
-@keyframes slide {
-  from { transform: translateX(0); }
-  to { transform: translateX(100px); }
-}
-
-.animated {
-  animation: slide ${duration}s ${bezier} forwards;
-}
-`;
-
-  const [copied, setCopied] = useState(false);
-
+export default function GeneratedCSS({ bezier, duration }: Props) {
   return (
-    <Card className="p-4">
-      <Button
-        onClick={() => {
-          navigator.clipboard.writeText(css);
-          setCopied(true);
-          setTimeout(() => setCopied(false), 1000);
-        }}
-      >
-        {copied ? "Copied!" : "Copy CSS"}
-      </Button>
-      <pre className="bg-black/40 text-sm p-3 mt-3 rounded">{css}</pre>
+    <Card>
+      <CardHeader>
+        <CardTitle>Generated CSS</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <CodeBlock label="CSS" code={buildCss(bezier, duration)} />
+      </CardContent>
     </Card>
   );
 }
