@@ -1,9 +1,13 @@
+import ToolLayout from "@/components/Public/Tools/ToolLayout";
 import BorderRadiusPlayground from "@/components/Public/Tools/BorderRadiusPlayground/BorderRadiusPlayground";
 
 export default function Page() {
   return (
-    <div className="container mx-auto py-10">
+    <ToolLayout
+      title="Border Radius Playground"
+      description="Create organic CSS border-radius shapes with individual control over every corner."
+    >
       <BorderRadiusPlayground />
-    </div>
+    </ToolLayout>
   );
 }

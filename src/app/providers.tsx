@@ -35,8 +35,8 @@ export default function Providers({ children }: { children: ReactNode }) {
       <QueryClientProvider client={client}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
-          enableSystem
+          defaultTheme="light"
+          enableSystem={false}
           disableTransitionOnChange
         >
           <UserProvider>{children}</UserProvider>

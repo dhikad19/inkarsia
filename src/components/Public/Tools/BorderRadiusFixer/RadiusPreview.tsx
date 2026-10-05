@@ -1,5 +1,3 @@
-import { motion } from "framer-motion";
-
 interface RadiusPreviewProps {
   parentRadius: number;
   padding: number;
@@ -12,23 +10,16 @@ export function RadiusPreview({
   childRadius,
 }: RadiusPreviewProps) {
   return (
-    <div className="flex justify-center mt-8">
-      <motion.div
-        animate={{ borderRadius: parentRadius }}
-        className="bg-indigo-100 relative w-72 h-56 flex items-center justify-center transition-all"
-        style={{
-          borderRadius: `${parentRadius}px`,
-          padding: `${padding}px`,
-        }}
+    <div className="flex items-center justify-center rounded-xl border bg-muted/40 p-6">
+      <div
+        className="h-56 w-72 max-w-full border bg-background transition-all duration-200"
+        style={{ borderRadius: parentRadius, padding }}
       >
-        <motion.div
-          animate={{ borderRadius: childRadius }}
-          className="bg-indigo-500 w-full h-full transition-all"
-          style={{
-            borderRadius: `${childRadius}px`,
-          }}
+        <div
+          className="h-full w-full bg-foreground transition-all duration-200"
+          style={{ borderRadius: childRadius }}
         />
-      </motion.div>
+      </div>
     </div>
   );
 }

@@ -1,120 +1,103 @@
-// app/aspect-ratio/page.tsx
 "use client";
 
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import CalculatorMode from "@/components/Public/Tools/AspectRatioCalculator/CalculatorMode";
-import CalculateAspectRatio from "@/components/Public/Tools/AspectRatioCalculator/CalculateAspectRatio";
+import ToolLayout from "@/components/Public/Tools/ToolLayout";
+import SegmentedControl from "@/components/Public/Tools/SegmentedControl";
+import CalculatorForm from "@/components/Public/Tools/AspectRatioCalculator/CalculatorForm";
 import CommonAspectRatios from "@/components/Public/Tools/AspectRatioCalculator/CommonAspectRatio";
 import VisualPreview from "@/components/Public/Tools/AspectRatioCalculator/VisualPreview";
 import GeneratedCSS from "@/components/Public/Tools/AspectRatioCalculator/GenerateCss";
-import CalculatorForm from "@/components/Public/Tools/AspectRatioCalculator/CalculatorForm";
+import {
+  getAspect,
+  Mode,
+} from "@/components/Public/Tools/AspectRatioCalculator/utils";
+
+const MODES: { value: Mode; label: string }[] = [
+  { value: "calculate", label: "Calculate Ratio" },
+  { value: "scale", label: "Scale Dimensions" },
+  { value: "find", label: "Find Dimension" },
+];
+
+const FORM_TITLE: Record<Mode, string> = {
+  calculate: "Calculate Aspect Ratio",
+  scale: "Scale Dimensions",
+  find: "Find Dimension",
+};
 
 export default function AspectRatioPage() {
-  // state lifted to page so all components share it
-  const [width, setWidth] = useState<number>(1920);
-  const [height, setHeight] = useState<number>(1080);
-  const [mode, setMode] = useState<"calculate" | "scale" | "find">("calculate");
+  const [width, setWidth] = useState(1920);
+  const [height, setHeight] = useState(1080);
+  const [mode, setMode] = useState<Mode>("calculate");
 
-  const aspect = useMemo(() => {
-    // reduce ratio
-    const gcd = (a: number, b: number): number => (b === 0 ? a : gcd(b, a % b));
-    const w = Math.max(1, Math.round(width));
-    const h = Math.max(1, Math.round(height));
-    const g = gcd(w, h);
-    const ratio = `${w / g}:${h / g}`;
-    const decimal = Number((w / h).toFixed(3));
-    const percent = Number(((h / w) * 100).toFixed(3)); // for padding-top
-    return { ratio, decimal, percent, w, h };
-  }, [width, height]);
+  const aspect = useMemo(() => getAspect(width, height), [width, height]);
 
   return (
-    <div className="p-6 max-w-6xl mx-auto space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle>Aspect-Ratio Calculator</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm text-muted-foreground">
-            Calculate aspect ratios, scale dimensions, and generate CSS. Click
-            common ratios to apply.
-          </p>
-        </CardContent>
-      </Card>
+    <ToolLayout
+      title="Aspect Ratio Calculator"
+      description="Calculate aspect ratios, scale dimensions, and generate CSS."
+    >
+      <SegmentedControl
+        options={MODES}
+        value={mode}
+        onChange={setMode}
+        className="w-full sm:w-auto"
+      />
 
-      <Card>
-        <CardContent>
-          <CalculatorMode mode={mode} onChangeMode={(m) => setMode(m)} />
-        </CardContent>
-      </Card>
-
-      <div className="grid md:grid-cols-2 gap-6">
+      <div className="grid gap-6 lg:grid-cols-2">
         <div className="space-y-6">
-          <Card>
+          <Card className="rounded-2xl">
             <CardHeader>
-              <CardTitle>Calculate Aspect Ratio</CardTitle>
+              <CardTitle className="text-lg">{FORM_TITLE[mode]}</CardTitle>
             </CardHeader>
             <CardContent>
-              <Card>
-                <CardHeader>
-                  <CardTitle>
-                    {mode === "calculate"
-                      ? "Calculate Aspect Ratio"
-                      : mode === "scale"
-                      ? "Scale Dimensions"
-                      : "Find Dimension"}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CalculatorForm
-                    mode={mode}
-                    width={width}
-                    height={height}
-                    onChangeWidth={setWidth}
-                    onChangeHeight={setHeight}
-                    aspect={aspect}
-                  />
-                </CardContent>
-              </Card>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Common Aspect Ratios</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <CommonAspectRatios
-                onSelect={(w, h) => {
-                  setWidth(w);
-                  setHeight(h);
-                }}
-                activeRatio={aspect.ratio}
+              <CalculatorForm
+                mode={mode}
+                width={width}
+                height={height}
+                aspect={aspect}
+                onChangeWidth={setWidth}
+                onChangeHeight={setHeight}
               />
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="rounded-2xl">
             <CardHeader>
-              <CardTitle>Generated CSS</CardTitle>
+              <CardTitle className="text-lg">Common Ratios</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CommonAspectRatios
+                aspect={aspect}
+                onSelect={(w, h) => {
+                  setWidth(w);
+                  setHeight(h);
+                }}
+              />
+            </CardContent>
+          </Card>
+        </div>
+
+        <div className="space-y-6">
+          <Card className="rounded-2xl">
+            <CardHeader>
+              <CardTitle className="text-lg">Visual Preview</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <VisualPreview aspect={aspect} />
+            </CardContent>
+          </Card>
+
+          <Card className="rounded-2xl">
+            <CardHeader>
+              <CardTitle className="text-lg">Generated CSS</CardTitle>
             </CardHeader>
             <CardContent>
               <GeneratedCSS aspect={aspect} />
             </CardContent>
           </Card>
         </div>
-
-        <div>
-          <Card>
-            <CardHeader>
-              <CardTitle>Visual Preview</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <VisualPreview width={width} height={height} aspect={aspect} />
-            </CardContent>
-          </Card>
-        </div>
       </div>
-    </div>
+    </ToolLayout>
   );
 }

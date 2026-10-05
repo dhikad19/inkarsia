@@ -1,34 +1,34 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { PRESETS, Radius, isSameRadius } from "./utils";
 
-const presets = {
-  None: { tl: [0, 0], tr: [0, 0], bl: [0, 0], br: [0, 0] },
-  Medium: { tl: [16, 16], tr: [16, 16], bl: [16, 16], br: [16, 16] },
-  Large: { tl: [32, 32], tr: [32, 32], bl: [32, 32], br: [32, 32] },
-  Circle: { tl: [150, 150], tr: [150, 150], bl: [150, 150], br: [150, 150] },
-  Organic: { tl: [120, 180], tr: [60, 80], bl: [80, 120], br: [140, 60] },
+type Props = {
+  radius: Radius;
+  onSelect: (r: Radius) => void;
 };
 
-export default function PresetStyles({ setRadius }: any) {
+export default function PresetStyles({ radius, onSelect }: Props) {
   return (
-    <div className="p-4 border rounded-lg space-x-2">
-      {Object.keys(presets).map((key) => (
-        <Button
-          key={key}
-          variant="secondary"
-          onClick={() =>
-            setRadius({
-              topLeft: { x: presets[key].tl[0], y: presets[key].tl[1] },
-              topRight: { x: presets[key].tr[0], y: presets[key].tr[1] },
-              bottomLeft: { x: presets[key].bl[0], y: presets[key].bl[1] },
-              bottomRight: { x: presets[key].br[0], y: presets[key].br[1] },
-            })
-          }
-        >
-          {key}
-        </Button>
-      ))}
+    <div className="flex flex-wrap gap-2">
+      {PRESETS.map((p) => {
+        const isActive = isSameRadius(radius, p.radius);
+        return (
+          <button
+            key={p.name}
+            type="button"
+            onClick={() => onSelect(p.radius)}
+            className={cn(
+              "rounded-full border px-4 py-1.5 text-sm font-medium transition-colors",
+              isActive
+                ? "border-black bg-black text-white dark:border-white dark:bg-white dark:text-black"
+                : "text-muted-foreground hover:bg-muted hover:text-foreground",
+            )}
+          >
+            {p.name}
+          </button>
+        );
+      })}
     </div>
   );
 }

@@ -1,16 +1,18 @@
 "use client";
 
-export default function PreviewBox({ radius }: any) {
-  const borderRadius = `${radius.topLeft.x}% ${radius.topRight.x}% ${radius.bottomRight.x}% ${radius.bottomLeft.x}% / ${radius.topLeft.y}% ${radius.topRight.y}% ${radius.bottomRight.y}% ${radius.bottomLeft.y}%`;
-
+export default function PreviewBox({ borderRadius }: { borderRadius: string }) {
   return (
-    <div className="p-4 border rounded-lg">
-      <div
-        className="mx-auto w-80 h-80 bg-muted flex items-center justify-center text-muted-foreground font-medium transition-all duration-200 ease-in-out"
-        style={{ borderRadius }}
-      >
-        BORDER RADIUS
+    <div className="space-y-3">
+      <div className="flex items-center justify-center rounded-xl border bg-muted/40 p-6">
+        <div
+          className="aspect-square w-full max-w-xs bg-foreground transition-[border-radius] duration-200"
+          style={{ borderRadius }}
+        />
       </div>
+      <p className="text-xs text-muted-foreground">
+        Persentase dihitung dari ukuran kotak. Kalau dua sudut bersebelahan
+        totalnya melebihi 100%, browser otomatis memperkecil radiusnya.
+      </p>
     </div>
   );
 }

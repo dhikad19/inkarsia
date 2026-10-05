@@ -1,5 +1,4 @@
 import { Inter } from "next/font/google";
-import Providers from "../providers";
 import Header from "@/components/Public/Navigation";
 
 const inter = Inter({
@@ -14,13 +13,9 @@ export default function PublicLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.className} min-h-screen`}>
-        <Providers>
-          <Header />
-          <main className="mx-auto px-4 sm:px-6 lg:px-20">{children}</main>
-        </Providers>
-      </body>
-    </html>
+    <div className={`${inter.className} min-h-screen`}>
+      <Header />
+      <main className="mx-auto px-4 sm:px-6 lg:px-20">{children}</main>
+    </div>
   );
 }

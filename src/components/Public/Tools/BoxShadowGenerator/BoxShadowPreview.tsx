@@ -1,31 +1,29 @@
 "use client";
-import React from "react";
-import { ShadowLayer } from "@/lib/types";
 
-interface Props {
-  layers: ShadowLayer[];
-}
+import { PreviewBg, ShadowLayer, toBoxShadow } from "./utils";
 
-const hexToRgba = (hex: string, alpha: number) => {
-  const r = parseInt(hex.slice(1, 3), 16);
-  const g = parseInt(hex.slice(3, 5), 16);
-  const b = parseInt(hex.slice(5, 7), 16);
-  return `rgba(${r},${g},${b},${alpha})`;
+const BG: Record<PreviewBg, string> = {
+  light: "#f4f4f5",
+  dark: "#18181b",
 };
 
-export default function BoxShadowPreview({ layers }: Props) {
-  const boxShadow = layers
-    .map(
-      (l) =>
-        `${l.inset ? "inset " : ""}${l.offsetX}px ${l.offsetY}px ${l.blur}px ${
-          l.spread
-        }px ${hexToRgba(l.color, l.opacity)}`
-    )
-    .join(", ");
+type Props = {
+  layers: ShadowLayer[];
+  background: PreviewBg;
+};
+
+export default function BoxShadowPreview({ layers, background }: Props) {
+  const bg = BG[background];
 
   return (
-    <div className="flex justify-center items-center h-full">
-      <div className="w-48 h-48 rounded-xl bg-white" style={{ boxShadow }} />
+    <div
+      className="flex h-72 items-center justify-center overflow-hidden rounded-xl border transition-colors"
+      style={{ background: bg }}
+    >
+      <div
+        className="h-40 w-40 rounded-2xl transition-shadow duration-200"
+        style={{ background: bg, boxShadow: toBoxShadow(layers) }}
+      />
     </div>
   );
 }

@@ -4,6 +4,8 @@ import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 
+export const MAX_RADIUS = 100;
+
 interface RadiusInputProps {
   id: string;
   label: string;
@@ -19,18 +21,19 @@ export function RadiusInputs({
   label,
   value,
   min = 0,
-  max = 100,
+  max = MAX_RADIUS,
   step = 1,
   onChange,
 }: RadiusInputProps) {
+  const clamp = (n: number) => Math.min(max, Math.max(min, n));
+
   return (
-    <div className="space-y-1">
-      <Label htmlFor={id} className="text-sm font-medium text-gray-700">
-        {label}
-      </Label>
-      <div className="flex items-center gap-3">
+    <div className="space-y-2">
+      <Label htmlFor={`${id}-input`}>{label}</Label>
+      <div className="flex items-center gap-4">
         <Slider
           id={id}
+          className="flex-1"
           min={min}
           max={max}
           step={step}
@@ -40,9 +43,11 @@ export function RadiusInputs({
         <Input
           id={`${id}-input`}
           type="number"
+          min={min}
+          max={max}
           className="w-20"
           value={value}
-          onChange={(e) => onChange(Number(e.target.value))}
+          onChange={(e) => onChange(clamp(Number(e.target.value) || 0))}
         />
       </div>
     </div>

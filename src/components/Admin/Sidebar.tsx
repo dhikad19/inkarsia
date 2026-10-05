@@ -71,7 +71,7 @@ export default function Sidebar({
 
   const toggleGroup = (label: string) => {
     setOpenGroups((prev) =>
-      prev.includes(label) ? prev.filter((g) => g !== label) : [...prev, label]
+      prev.includes(label) ? prev.filter((g) => g !== label) : [...prev, label],
     );
   };
 
@@ -98,7 +98,7 @@ export default function Sidebar({
       className={clsx(
         "bg-background sticky top-0 border-r border-border h-screen flex flex-col transition-all duration-300",
         isCollapsed ? "w-16" : "w-64",
-        !isOpen && "hidden md:flex"
+        !isOpen && "hidden md:flex",
       )}
     >
       <div className="p-3 truncate flex justify-between items-center">
@@ -118,7 +118,7 @@ export default function Sidebar({
           {!isCollapsed && (
             <div className="ml-3 mb-0.5">
               <h4 className="text-md font-bold leading-none mt-1 mb-0">
-                Inkarsa
+                Rackit
               </h4>
               <div className="text-sm mt-0.5 text-muted-foreground">Admin</div>
             </div>
@@ -191,13 +191,13 @@ export default function Sidebar({
                       "ml-3 text-sm font-medium transition-all duration-300",
                       isCollapsed
                         ? "opacity-0 translate-x-2 pointer-events-none"
-                        : "opacity-100 translate-x-0"
+                        : "opacity-100 translate-x-0",
                     )}
                   >
                     {item.label}
                   </span>
                 </Link>
-              )
+              ),
             )}
           </div>
         ))}
@@ -209,7 +209,7 @@ export default function Sidebar({
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           className={clsx(
             "flex items-center gap-3 w-full px-3 py-2 rounded hover:bg-accent",
-            isDropdownOpen && "bg-accent"
+            isDropdownOpen && "bg-accent",
           )}
         >
           <Settings className="w-5 h-5" />

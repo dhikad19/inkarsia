@@ -12,11 +12,11 @@ export default function Footer() {
   return (
     <footer className="border-t bg-background text-muted-foreground mt-16">
       <div className="mx-auto py-10">
-        <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+        <div className="flex flex-col pb-5 md:flex-row justify-between items-center gap-6">
           {/* Brand */}
           <div className="flex flex-col items-center md:items-start text-center md:text-left">
             <Link href="/" className="text-lg font-semibold text-foreground">
-              Inkarsa Studio
+              Rackit
             </Link>
             <p className="text-sm mt-1">
               Empowering design, accessibility, and intelligence.
@@ -89,12 +89,12 @@ export default function Footer() {
 
         {/* Bottom credit */}
         <div className="flex flex-col md:flex-row justify-between items-center text-xs text-muted-foreground/80 gap-2">
-          <p>© {year} Inkarsa. All rights reserved.</p>
-          <p>
+          <p>© {year} Rackit. All rights reserved.</p>
+          {/* <p>
             Made with ❤️ using{" "}
             <span className="font-medium text-foreground">Next.js</span> +{" "}
             <span className="font-medium text-foreground">shadcn/ui</span>
-          </p>
+          </p> */}
         </div>
       </div>
     </footer>

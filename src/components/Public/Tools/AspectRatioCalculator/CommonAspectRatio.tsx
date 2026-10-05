@@ -1,43 +1,54 @@
-// components/aspect-ratio/CommonAspectRatios.tsx
 "use client";
 
-import React from "react";
-import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { Aspect } from "./utils";
 
 const COMMON = [
-  { name: "16:9 (HD)", w: 16, h: 9 },
-  { name: "4:3 (Standard)", w: 4, h: 3 },
-  { name: "1:1 (Square)", w: 1, h: 1 },
-  { name: "21:9 (Ultrawide)", w: 21, h: 9 },
-  { name: "9:16 (Vertical)", w: 9, h: 16 },
-  { name: "3:2 (Photo)", w: 3, h: 2 },
-  { name: "2.39:1 (Cinematic)", w: 239, h: 100 }, // approximate cinematic
+  { ratio: "16:9", label: "HD", w: 16, h: 9 },
+  { ratio: "4:3", label: "Standard", w: 4, h: 3 },
+  { ratio: "1:1", label: "Square", w: 1, h: 1 },
+  { ratio: "21:9", label: "Ultrawide", w: 21, h: 9 },
+  { ratio: "9:16", label: "Vertical", w: 9, h: 16 },
+  { ratio: "3:2", label: "Photo", w: 3, h: 2 },
+  { ratio: "2.39:1", label: "Cinematic", w: 239, h: 100 },
 ];
 
 type Props = {
+  aspect: Aspect;
   onSelect: (w: number, h: number) => void;
-  activeRatio?: string;
 };
 
-export default function CommonAspectRatios({ onSelect, activeRatio }: Props) {
+export default function CommonAspectRatios({ aspect, onSelect }: Props) {
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
       {COMMON.map((c) => {
-        const ratioStr = `${c.w}:${c.h}`;
+        // bandingkan lewat perkalian silang, bukan string
+        const isActive = aspect.w * c.h === aspect.h * c.w;
+        // skala supaya sisi terpanjang ≈ 1920px, rasio tetap persis
+        const k = Math.max(1, Math.round(1920 / Math.max(c.w, c.h)));
+
         return (
-          <Button
-            key={c.name}
-            variant={activeRatio === ratioStr ? "default" : "outline"}
-            onClick={() => onSelect(c.w * 100, c.h * 100)} // scale up to give sensible defaults
-            size="sm"
+          <button
+            key={c.ratio}
+            type="button"
+            onClick={() => onSelect(c.w * k, c.h * k)}
+            className={cn(
+              "flex flex-col items-center rounded-xl border px-3 py-2.5 transition-colors",
+              isActive
+                ? "border-black bg-black text-white dark:border-white dark:bg-white dark:text-black"
+                : "hover:bg-muted",
+            )}
           >
-            <div className="flex flex-col items-center">
-              <span className="text-xs">{ratioStr}</span>
-              <span className="text-[11px] text-muted-foreground">
-                {c.name.split(" ")[1] || c.name}
-              </span>
-            </div>
-          </Button>
+            <span className="text-sm font-medium">{c.ratio}</span>
+            <span
+              className={cn(
+                "text-[11px]",
+                isActive ? "opacity-70" : "text-muted-foreground",
+              )}
+            >
+              {c.label}
+            </span>
+          </button>
         );
       })}
     </div>
